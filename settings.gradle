@@ -1,9 +1,21 @@
 pluginManagement {
     repositories {
+        maven { url = 'https://neoforged.net' }
+        mavenCentral()
         gradlePluginPortal()
     }
 }
 
 plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+    //id 'com.github.Gamerdragon0095:DragonLib-NeoForge' version 'v26-1.0.0'
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        mavenCentral()
+        // 🟢 ADD JITPACK HERE ONLY
+        maven { url = 'https://jitpack.io' }
+    }
 }
