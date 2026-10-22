@@ -52,7 +52,10 @@ public class ModModelProvider extends ModelProvider {
 
         Identifier baseId = ModItems.SOUL_TUNER.getId(); // Gets 'gravedungeons:your_custom_item'
 
-        Identifier empty = ModelTemplates.FLAT_ITEM.create(
+
+        // |||||||||||||||||||||||||||||||| if anyone knows how to get this sh*t working please tell me how ||||||||||||||||||||||
+        // \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/                                                                 \/\/\/\/\/\/\/\/\/\/\/
+        /*Identifier empty = ModelTemplates.FLAT_ITEM.create(
                 Identifier.fromNamespaceAndPath(baseId.getNamespace(), "item/" + baseId.getPath() + "_empty"),
                 new TextureMapping().put(TextureSlot.LAYER0, new Material(Identifier.fromNamespaceAndPath(GraveDungeons.MODID, "item/" + baseId.getPath()))),
                 itemModels.modelOutput
@@ -98,7 +101,9 @@ public class ModModelProvider extends ModelProvider {
                 ),
                         Optional.of(new CuboidItemModelWrapper.Unbaked(empty, Optional.empty(), List.of()))
                 )
-        );
+        );*/
+        //   /\/\/\/\/\/\/\/\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+        //   |||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
         // 2. Declare the custom range dispatch logic wrapper cleanly using vanilla definitions
         // This automatically saves out to assets/gravedungeons/items/your_custom_item.json
@@ -124,28 +129,5 @@ public class ModModelProvider extends ModelProvider {
 
         //BlockItems
         blockModels.registerSimpleFlatItemModel(ModBlocks.ECHO_CRYSTAL.get());
-    }
-
-    public static class SoulTunerModeProperty implements SelectItemModelProperty<Integer> {
-        public static final SoulTunerModeProperty INSTANCE = new SoulTunerModeProperty();
-
-        @Override
-        public @Nullable Integer get(ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity livingEntity, int i, ItemDisplayContext itemDisplayContext) {
-            return itemStack.getOrDefault(ModDataComponentTypes.SOUL_TUNER_MODE.get(), 0);
-        }
-
-        @Override
-        public Codec<Integer> valueCodec() {
-            return Codec.INT;
-        }
-
-        @Override
-        public SelectItemModelProperty.Type<? extends SelectItemModelProperty<Integer>, Integer> type() {
-            // Use the static factory method to return a valid registration wrapper instead of null
-            return SelectItemModelProperty.Type.create(
-                    com.mojang.serialization.MapCodec.unit(INSTANCE),
-                    Codec.INT
-            );
-        }
     }
 }
