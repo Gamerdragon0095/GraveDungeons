@@ -29,4 +29,18 @@ public class CompoundTagPos {
         
         return output;
     }
+
+    public static CompoundTag createTag(BlockPos pos) {
+        CompoundTag output = new CompoundTag();
+
+        float X = pos.getX();
+        float Y = pos.getY();
+        float Z = pos.getZ();
+
+        output.putFloat("X", X);
+        output.putFloat("Y", Y);
+        output.putFloat("Z", Z);
+
+        return output;
+    }
 }

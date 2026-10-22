@@ -7,6 +7,7 @@ import net.gamerdragon0095.dragon_lib.data.entity.GetCurrentHandWithItem;
 import net.gamerdragon0095.gravedungeons.action.block.entity.EchoCrystalAction;
 import net.gamerdragon0095.gravedungeons.block.entity.ModBlockEntities;
 import net.gamerdragon0095.gravedungeons.block.entity.custom.EchoCrystalEntity;
+import net.gamerdragon0095.gravedungeons.block.entity.custom.SoulBlockSensorEntity;
 import net.gamerdragon0095.gravedungeons.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,10 +34,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -51,6 +49,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.Map;
 
 public class EchoCrystal extends BaseEntityBlock {
+    public static final IntegerProperty LOGIC_STATE = IntegerProperty.create("logic_state", 1, 16);
+
     public static final MapCodec<EchoCrystal> CODEC = RecordCodecBuilder.mapCodec((i) -> i.group(Codec.FLOAT.fieldOf("height").forGetter((b) -> b.height), Codec.FLOAT.fieldOf("width").forGetter((b) -> b.width), propertiesCodec()).apply(i, EchoCrystal::new));
     public static final BooleanProperty WATERLOGGED;
     public static final EnumProperty<Direction> FACING;
@@ -60,10 +60,19 @@ public class EchoCrystal extends BaseEntityBlock {
 
     public EchoCrystal(Float height, Float width, Properties properties) {
         super(properties);
-        this.registerDefaultState((BlockState)((BlockState)this.defaultBlockState().setValue(WATERLOGGED, false)).setValue(FACING, Direction.UP));
+        this.registerDefaultState(this.defaultBlockState()
+                .setValue(WATERLOGGED, false)
+                .setValue(FACING, Direction.UP)
+                .setValue(LOGIC_STATE, 1));
+
         this.shapes = Shapes.rotateAll(Block.boxZ((double)width, (double)(16.0F - height), (double)16.0F));
         this.height = height;
         this.width = width;
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 
     @Override
@@ -71,12 +80,37 @@ public class EchoCrystal extends BaseEntityBlock {
         //if (level.isClientSide())
          //   return super.useWithoutItem(state, level, pos, player, hitResult);
 
+        /*BlockState currentState = level.getBlockState(pos);
+        BlockState newState = currentState.setValue(LOGIC_STATE, 2);
+
+        // 1. Capture the Block Entity instance BEFORE changing the state
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+
+        // 2. Pass flag 2 (Block.UPDATE_CLIENTS) to prevent full destruction loops
+        level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
+
+        // 3. Mark the captured block entity as changed so it serializes immediately
+        if (blockEntity != null) {
+            blockEntity.setChanged();
+        }
+
         ItemStack itemUsing = GetCurrentHandWithItem.mainHandPriority(player, ModItems.SOUL_TUNER.get());
 
-        if (itemUsing != ItemStack.EMPTY) {
+        //if (itemUsing != ItemStack.EMPTY) {
             //EchoCrystalAction.placeEchoCrystal(level, pos);
-            return InteractionResult.SUCCESS;
-        }
+        BlockState currentState = level.getBlockState(pos);
+        BlockState newState = currentState.setValue(LOGIC_STATE, 3);
+
+        // 2. Set the block state using flags that prevent the Block Entity from being recreated
+        level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
+
+        // 3. Force the Block Entity to mark itself as changed so it saves to disk
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity != null) {
+            blockEntity.setChanged();
+        }*/
+            //return InteractionResult.SUCCESS;
+        //}
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
@@ -135,7 +169,7 @@ public class EchoCrystal extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(new Property[]{WATERLOGGED, FACING});
+        builder.add(new Property[]{WATERLOGGED, FACING, LOGIC_STATE});
     }
 
     @Override
@@ -144,7 +178,7 @@ public class EchoCrystal extends BaseEntityBlock {
         EchoCrystalAction.placeEchoCrystal(world, pos);
     }
 
-    @Override
+    /*@Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
         if (type == ModBlockEntities.ECHO_CRYSTAL) {
             return (lvl, pos, _blockState, blockEntity) -> {
@@ -152,6 +186,19 @@ public class EchoCrystal extends BaseEntityBlock {
             };
         }
         return super.getTicker(level, blockState, type);
+    }*/
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        // Optional: If you only want your code to run on the Server side (common for processing/logic)
+        //if (level.isClientSide()) {
+        //    return null;
+        //}
+
+        // Match your BlockEntityType with the registry entry to return the matching ticker
+        return createTickerHelper(type, ModBlockEntities.ECHO_CRYSTAL.get(), EchoCrystalEntity::tick);
+        //return null;
     }
 
     static {

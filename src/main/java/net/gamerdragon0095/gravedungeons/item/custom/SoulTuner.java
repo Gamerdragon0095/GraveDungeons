@@ -1,15 +1,21 @@
 package net.gamerdragon0095.gravedungeons.item.custom;
 
 
+import com.mojang.serialization.MapCodec;
 import net.gamerdragon0095.gravedungeons.action.item.SoulTunerAction;
+import net.gamerdragon0095.gravedungeons.block.ModBlocks;
+import net.gamerdragon0095.gravedungeons.item.ModItems;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperty;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickAction;
@@ -19,18 +25,21 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.math.Fraction;
 
 import net.minecraft.world.item.TooltipFlag;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public class SoulTuner extends BundleItem {
-    private static final int MAX_CUSTOM_CAPACITY = 1;
+    private static final int MAX_CUSTOM_CAPACITY = 64;
+    //private static final int MIN_CUSTOM_CAPACITY = 16;
 
     public SoulTuner(Properties properties) {
         super(properties.stacksTo(1));
@@ -67,14 +76,14 @@ public class SoulTuner extends BundleItem {
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        BundleContents contents = (BundleContents)stack.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);
+        //BundleContents contents = (BundleContents)stack.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);
         return false;
     }
 
     // Handled when you click AN ITEM with THIS BUNDLE
     @Override
     public boolean overrideStackedOnOther(ItemStack bundleStack, Slot slot, ClickAction action, Player player) {
-        System.out.println("I clicked on item with this bundle!" + slot.getItem());
+        System.out.println("I clicked on item with this bundle! slotItem: '" + slot.getItem() + "' bundleItem: '" + bundleStack + "' clickAction: '" + action + "'");
         if (!slot.allowModification(player))
             return false;
 
@@ -99,82 +108,13 @@ public class SoulTuner extends BundleItem {
 
         return true;
 
-        /*System.out.println("I clicked on item with this bundle!" + slot.getItem());
-        BundleContents initialContents = (BundleContents)bundleStack.get(DataComponents.BUNDLE_CONTENTS);
-        if (initialContents != null && bundleStack.getCount() == 1) {
-            System.out.println("test0");
-            ItemStack other = slot.getItem();
-            BundleContents.Mutable contents = new BundleContents.Mutable(initialContents);
-            if (action == ClickAction.PRIMARY && !other.isEmpty()) {
-                System.out.println("test1");
-                if (tryInsertIntoCustomBundle(bundleStack, other) > 0) {
-                    slot.getItem().shrink(tryInsertIntoCustomBundle(bundleStack, other));
 
-                    ItemStack itemsToAdd = slot.getItem();
-                    itemsToAdd.setCount(tryInsertIntoCustomBundle(bundleStack, other));
-
-                    contents.tryInsert(itemsToAdd);
-
-                    System.out.println("test2");
-                    playInsertSound(player);
-                } else {
-                    System.out.println("test3");
-                    playInsertFailSound(player);
-                }
-
-                bundleStack.set(DataComponents.BUNDLE_CONTENTS, contents.toImmutable());
-                this.broadcastChangesOnContainerMenu(player);
-                System.out.println("test4");
-                return true;
-            } else if (action == ClickAction.SECONDARY && other.isEmpty()) {
-                System.out.println("test5");
-                ItemStack itemStack = contents.removeOne();
-                if (itemStack != null) {
-                    System.out.println("test6");
-                    ItemStack remainder = SoulTunerAction.SoulTunerSafeInsert(slot, itemStack, itemStack.getCount(), MAX_CUSTOM_CAPACITY);
-                    if (remainder.getCount() > 0) {
-                        System.out.println("test7");
-                        contents.tryInsert(remainder);
-                    } else {
-                        System.out.println("test8");
-                        playRemoveOneSound(player);
-                    }
-                }
-
-                bundleStack.set(DataComponents.BUNDLE_CONTENTS, contents.toImmutable());
-                this.broadcastChangesOnContainerMenu(player);
-                System.out.println("test9");
-                return true;
-            } else {
-                System.out.println("test10");
-                return false;
-            }
-        } else {
-            System.out.println("test11");
-            return false;
-        }*/
-
-
-
-
-
-        /*if (action != ClickAction.SECONDARY) return false;
-
-        ItemStack itemInSlot = slot.getItem();
-        if (itemInSlot.isEmpty()) {
-            // Remove the top item from the bundle if secondary-clicking an empty slot
-            removeTopItem(bundleStack, slot, player);
-        } else {
-            // Insert item into the bundle
-            insertItem(bundleStack, slot, player);
-        }
-        return true;*/
     }
 
     // Handled when you click THIS BUNDLE with AN ITEM
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack bundleStack, ItemStack otherStack, Slot slot, ClickAction action, Player player, SlotAccess slotAccess) {
-        System.out.println("I clicked on bundle with this item!  otherstack: " + otherStack + "  slot: " + slot.getItem() + "   bundleStack: " + bundleStack);
+        //System.out.println("I clicked on bundle with this item! otherStack: '" + otherStack + "', slot: '" + slot.getItem() + "', bundleStack: '" + bundleStack + "', slotAccess: '" + slotAccess + "'");
         if (!slot.allowModification(player))
             return false;
 
@@ -190,7 +130,7 @@ public class SoulTuner extends BundleItem {
         } else {
             if (otherStack.isEmpty()) {
                 removeTopItemBySlotAccess(bundleStack, slotAccess, player);
-            }else {
+            } else {
                 // Try to put the held item inside
                 return false;
             }
@@ -199,134 +139,7 @@ public class SoulTuner extends BundleItem {
         return true;
 
 
-        /*if (bundleStack.getCount() != 1) {
-            return false;
-        } else if (action == ClickAction.PRIMARY && otherStack.isEmpty()) {
-            toggleSelectedItem(bundleStack, -1);
-            return false;
-        } else {
-            BundleContents initialContents = (BundleContents)bundleStack.get(DataComponents.BUNDLE_CONTENTS);
-            if (initialContents == null) {
-                return false;
-            } else {
-                BundleContents.Mutable contents = new BundleContents.Mutable(initialContents);
-                if (action == ClickAction.PRIMARY && !otherStack.isEmpty()) {
-                    if (slot.allowModification(player) && contents.tryInsert(otherStack) > 0) {
-                        playInsertSound(player);
-                    } else {
-                        playInsertFailSound(player);
-                    }
 
-                    bundleStack.set(DataComponents.BUNDLE_CONTENTS, contents.toImmutable());
-                    //this.broadcastChangesOnContainerMenu(player);
-                    return true;
-                } else if (action == ClickAction.SECONDARY && otherStack.isEmpty()) {
-                    if (slot.allowModification(player)) {
-                        ItemStack removed = contents.removeOne();
-                        if (removed != null) {
-                            playRemoveOneSound(player);
-                            slotAccess.set(removed);
-                        } else  {
-                            //removeTopItem(bundleStack, slot, player);
-                        }
-                    }
-
-                    bundleStack.set(DataComponents.BUNDLE_CONTENTS, contents.toImmutable());
-                    //this.broadcastChangesOnContainerMenu(player);
-                    return true;
-                } else {
-                    toggleSelectedItem(bundleStack, -1);
-                    return false;
-                }
-            }
-        }*/
-
-
-
-
-        /*if (action == ClickAction.PRIMARY && otherStack.isEmpty()) {
-            toggleSelectedItem(bundleStack, -1);
-            return false;
-        }else {
-            BundleContents initialContents = (BundleContents)bundleStack.get(DataComponents.BUNDLE_CONTENTS);
-            if (initialContents == null)
-                return false;
-
-            BundleContents.Mutable contents = new BundleContents.Mutable(initialContents);
-            if (action == ClickAction.PRIMARY && !otherStack.isEmpty()) {
-                if (slot.allowModification(player) && contents.tryInsert(otherStack) > 0) {
-                    playInsertSound(player);
-                } else {
-                    playInsertFailSound(player);
-                }
-
-                bundleStack.set(DataComponents.BUNDLE_CONTENTS, contents.toImmutable());
-                this.broadcastChangesOnContainerMenu(player);
-                return true;
-            } else if (action == ClickAction.SECONDARY && otherStack.isEmpty()) {
-                if (slot.allowModification(player)) {
-                    ItemStack removed = contents.removeOne();
-                    if (removed != null) {
-                        playRemoveOneSound(player);
-                        slotAccess.set(removed);
-                    }
-                }
-
-                bundleStack.set(DataComponents.BUNDLE_CONTENTS, contents.toImmutable());
-                this.broadcastChangesOnContainerMenu(player);
-                return true;
-            }
-
-            if (otherStack.isEmpty()) {
-                // Take an item out if holding nothing and right-clicking the bundle
-                removeTopItem(bundleStack, slot, player);
-            } else {
-                // Try to put the held item inside
-                int amountInserted = tryInsertIntoCustomBundle(bundleStack, otherStack);
-                if (amountInserted > 0) {
-                    otherStack.shrink(amountInserted);
-                }
-            }
-            return true;
-        }
-
-        if (action == ClickAction.PRIMARY && other.isEmpty()) {
-            toggleSelectedItem(self, -1);
-            return false;
-        } else {
-            BundleContents initialContents = (BundleContents)self.get(DataComponents.BUNDLE_CONTENTS);
-            if (initialContents == null) {
-                return false;
-            } else {
-                BundleContents.Mutable contents = new BundleContents.Mutable(initialContents);
-                if (action == ClickAction.PRIMARY && !other.isEmpty()) {
-                    if (slot.allowModification(player) && contents.tryInsert(other) > 0) {
-                        //playInsertSound(player);
-                    } else {
-                        //playInsertFailSound(player);
-                    }
-
-                    self.set(DataComponents.BUNDLE_CONTENTS, contents.toImmutable());
-                    this.broadcastChangesOnContainerMenu(player);
-                    return true;
-                } else if (action == ClickAction.SECONDARY && other.isEmpty()) {
-                    if (slot.allowModification(player)) {
-                        ItemStack removed = contents.removeOne();
-                        if (removed != null) {
-                            playRemoveOneSound(player);
-                            action.set(removed);
-                        }
-                    }
-
-                    self.set(DataComponents.BUNDLE_CONTENTS, contents.toImmutable());
-                    this.broadcastChangesOnContainerMenu(player);
-                    return true;
-                } else {
-                    toggleSelectedItem(self, -1);
-                    return false;
-                }
-            }
-        }*/
     }
 
     private void broadcastChangesOnContainerMenu(Player player) {
@@ -366,6 +179,10 @@ public class SoulTuner extends BundleItem {
             return 0;
         }
 
+        if ((insertStack.getItem() != ModItems.AWAKENED_ECHO_SHARD.get()) && (insertStack.getItem() != ModItems.AWAKENED_AMETHYST_SHARD.get())) {
+            return 0;
+        }
+
         // Optional security: also block items that have internal container data components
         if (insertStack.has(net.minecraft.core.component.DataComponents.CONTAINER)) {
             return 0;
@@ -375,9 +192,17 @@ public class SoulTuner extends BundleItem {
         int currentWeight = getBundleWeight(currentContents);
         int itemWeight = getWeight(insertStack);
 
+        /*if (MIN_CUSTOM_CAPACITY > MAX_CUSTOM_CAPACITY) {
+            return 0;
+        }*/
+
         if (currentWeight + itemWeight > MAX_CUSTOM_CAPACITY) {
             return 0;
         }
+
+        /*if (!(currentWeight + itemWeight >= MIN_CUSTOM_CAPACITY)) {
+            return 0;
+        }*/
 
         // Reconstruct the bundle inventory list to append the new item
         List<ItemStack> newItems = new ArrayList<>();
@@ -486,5 +311,54 @@ public class SoulTuner extends BundleItem {
         return retval;
     }
 
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        Player player = context.getPlayer();
+        ItemStack soulTuner = context.getItemInHand();
+
+        if (!level.isClientSide()) {
+            //if (level.getBlockState(pos).getBlock() == ModBlocks.ECHO_CRYSTAL.get()) {
+                SoulTunerAction.useAction(soulTuner, pos, player, level);
+            //}
+        }
+
+        return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticksRemaining) {
+        if (livingEntity instanceof Player player) {
+            int useDuration = this.getUseDuration(itemStack, livingEntity);
+            boolean isFirstTick = ticksRemaining == useDuration;
+            if (isFirstTick || ticksRemaining < useDuration - 10 && ticksRemaining % 2 == 0) {
+                //this.dropContent(level, player, itemStack);
+            }
+        }
+
+    }
+
+    @Override
+    public void inventoryTick(ItemStack itemstack, ServerLevel world, Entity entity, @Nullable EquipmentSlot equipmentSlot) {
+        super.inventoryTick(itemstack, world, entity, equipmentSlot);
+        if ((equipmentSlot == EquipmentSlot.MAINHAND) || (equipmentSlot == EquipmentSlot.OFFHAND)) {
+            SoulTunerAction.highlightInputPosBlock(world, itemstack, entity);
+        }
+    }
+
+    public record ModeProperty() implements RangeSelectItemModelProperty {
+        public static final MapCodec<ModeProperty> MAP_CODEC = MapCodec.unit(new ModeProperty());
+
+        @Override
+        public float get(ItemStack itemStackToRender, @Nullable ClientLevel clientWorld, @Nullable ItemOwner owner, int seed) {
+            return 0; //(float) BundleTypeItemPropertyValueProviderProcedure.execute(itemStackToRender);
+        }
+
+        @Override
+        public MapCodec<ModeProperty> type() {
+            return MAP_CODEC;
+        }
+    }
 
 }

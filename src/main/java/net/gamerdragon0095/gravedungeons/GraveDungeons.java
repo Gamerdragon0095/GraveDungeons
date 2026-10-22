@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.ints.IntObjectPair;
 import net.gamerdragon0095.gravedungeons.block.ModBlocks;
 import net.gamerdragon0095.gravedungeons.block.entity.ModBlockEntities;
 //import net.gamerdragon0095.gravedungeons.gui.ModMenus;
+import net.gamerdragon0095.gravedungeons.item.ModDataComponentTypes;
 import net.gamerdragon0095.gravedungeons.item.ModItems;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -52,6 +53,7 @@ public class GraveDungeons {
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
+        ModDataComponentTypes.DATA_COMPONENT_TYPES.register(modEventBus);
         //ModMenus.REGISTRY.register(modEventBus);
     }
 

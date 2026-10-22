@@ -17,6 +17,18 @@ public class ModItems {
             properties -> properties.stacksTo(1)
                     .component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY));
 
+    public static final DeferredItem<Item> AWAKENED_AMETHYST_SHARD = ITEMS.registerSimpleItem("awakened_amethyst_shard",
+            properties -> properties.stacksTo(1)
+                    );
+
+    public static final DeferredItem<Item> AWAKENED_ECHO_SHARD = ITEMS.registerSimpleItem("awakened_echo_shard",
+            properties -> properties.stacksTo(1)
+                    );
+
+    public static final DeferredItem<Item> AWAKENED_ECHO_FRAGMENT = ITEMS.registerSimpleItem("awakened_echo_fragment",
+            properties -> properties.stacksTo(1)
+                    );
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

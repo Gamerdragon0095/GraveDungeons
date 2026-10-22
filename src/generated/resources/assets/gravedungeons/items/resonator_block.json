@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "gravedungeons:block/resonator_block"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "gravedungeons:block/resonator_block",
+    "down": "gravedungeons:block/resonator_block",
+    "up": "gravedungeons:block/resonator_block",
+    "north": "gravedungeons:block/resonator_block_side",
+    "east": "gravedungeons:block/resonator_block_side",
+    "south": "gravedungeons:block/resonator_block_side",
+    "west": "gravedungeons:block/resonator_block_side"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:chests",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gravedungeons:awakened_echo_shard",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gravedungeons:awakened_echo_fragment",
+          "weight": 35
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gravedungeons:awakened_amethyst_shard",
+          "weight": 35
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+	"parent": "gravedungeons:block/echo_crystal_base",
+	"textures": {
+		"base": "gravedungeons:block/echo_crystal_base_nor_1",
+		"base_side": "gravedungeons:block/echo_crystal_base_nor_1",
+		"crystal1": "gravedungeons:block/echo_crystal",
+		"crystal2": "gravedungeons:block/echo_crystal_off",
+		"crystal3": "gravedungeons:block/echo_crystal",
+		"crystal4": "gravedungeons:block/echo_crystal_off",
+		"particle": "gravedungeons:block/echo_crystal_base_nor_1"
+	}
+}

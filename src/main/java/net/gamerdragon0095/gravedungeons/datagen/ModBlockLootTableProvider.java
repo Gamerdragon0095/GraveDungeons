@@ -26,6 +26,12 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(ModBlocks.ECHO_CRYSTAL.get());
+        dropSelf(ModBlocks.SOUL_BLOCK_SENSOR.get());
+        dropSelf(ModBlocks.SOUL_BLOCK.get());
+        dropSelf(ModBlocks.RESONATOR_BLOCK.get());
+        dropSelf(ModBlocks.INFESTED_BONE.get());
+        dropSelf(ModBlocks.INFESTED_EARTH.get());
+        dropSelf(ModBlocks.INFESTED_STONE.get());
     }
 
     @Override

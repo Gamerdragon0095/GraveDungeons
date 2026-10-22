@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:item/generated",
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "gravedungeons:soul_tuner_mode",
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "gravedungeons:item/soul_tuner"
+    },
+    "entries": [
+      {
+        "threshold": 1,
+        "model": "gravedungeons:item/soul_tuner_echo"
+      },
+      {
+        "threshold": 2,
+        "model": "gravedungeons:item/soul_tuner_amethyst"
+      },
+      {
+        "threshold": 3,
+        "model": "gravedungeons:item/soul_tuner_iron"
+      },
+      {
+        "threshold": 4,
+        "model": "gravedungeons:item/soul_tuner_copper"
+      }
+    ]
+  }
+}
