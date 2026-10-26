@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "gravedungeons:item/infested_copper_nuget"
+  }
+}

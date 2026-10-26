@@ -1,7 +1,7 @@
 package net.gamerdragon0095.gravedungeons.action.item;
 
 import com.mojang.math.Transformation;
-import net.gamerdragon0095.dragon_lib.data.storage.RenderingEntityManager;
+//import net.gamerdragon0095.dragon_lib.data.storage.RenderingEntityManager;
 import net.gamerdragon0095.gravedungeons.GraveDungeons;
 import net.gamerdragon0095.gravedungeons.action.block.GenericBlockAction;
 import net.gamerdragon0095.gravedungeons.action.entity.GeneralEntityAction;
@@ -81,8 +81,24 @@ public class SoulTunerAction {
 
             //System.out.println("test10:" + awakenedShard);
 
-            if (awakenedShard.get(ModDataComponentTypes.INPUT_POS) == null) {
-                awakenedShard.set(ModDataComponentTypes.INPUT_POS, pos);
+            if ((awakenedShard.get(ModDataComponentTypes.INPUT_POS) == null)) {
+                if (awakenedShard.getItem() != ModItems.INFESTED_IRON_NUGET.get()
+                        && awakenedShard.getItem() != ModItems.INFESTED_COPPER_NUGET.get()
+                        && awakenedShard.getItem() != ModItems.AWAKENED_LOOT_GEM.get()
+                ) {
+                    awakenedShard.set(ModDataComponentTypes.INPUT_POS, pos);
+                } else {
+                    if (awakenedShard.getItem() == ModItems.INFESTED_IRON_NUGET.get()) {
+                        useWithIronNuget(awakenedShard, blockEntity, player, pos);
+
+                    } else if (awakenedShard.getItem() == ModItems.INFESTED_COPPER_NUGET.get()) {
+                        useWithCopperNuget(awakenedShard, blockEntity, player, pos);
+
+                    } else if (awakenedShard.getItem() == ModItems.AWAKENED_LOOT_GEM.get()) {
+                        useWithLootGem(level, awakenedShard, blockEntity, player, pos);
+
+                    }
+                }
                 //System.out.println("test11:" + soulTuner);
             } else {
                 BlockPos inputItemPos = awakenedShard.get(ModDataComponentTypes.INPUT_POS);
@@ -237,6 +253,172 @@ public class SoulTunerAction {
         }
     }
 
+    public static void useWithIronNuget(ItemStack infestedNuget, BlockEntity blockEntity, Player player, BlockPos pos) {
+        //BlockPos inputItemPos = infestedNuget.get(ModDataComponentTypes.INPUT_POS);
+        //System.out.println("test12:" + inputItemPos);
+        //if ((inputItemPos.getX() != pos.getX()) || (inputItemPos.getY() != pos.getY()) || (inputItemPos.getZ() != pos.getZ())) {
+            //System.out.println("test19:" + pos);
+            //if (infestedNuget.get(ModDataComponentTypes.INPUT_POS) == null) {
+                //infestedNuget.set(ModDataComponentTypes.INPUT_POS, pos);
+                //System.out.println("test11:" + soulTuner);
+            //} else {
+                //BlockPos inputItemPos = infestedNuget.get(ModDataComponentTypes.INPUT_POS);
+
+            if (infestedNuget.getItem() == ModItems.INFESTED_IRON_NUGET.get()) {
+                CompoundTag logicTag1 = blockEntity.getPersistentData().getCompoundOrEmpty("Input1");
+                CompoundTag logicTag2 = blockEntity.getPersistentData().getCompoundOrEmpty("Input2");
+
+                CompoundTag output = blockEntity.getPersistentData().getCompoundOrEmpty("Output");
+
+                if (output.isEmpty()) {
+                    System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:SoulTunerAction.useWithIronNuget] Error: The BlockEntity: '" + blockEntity + "' at: '" + pos + "' does not have an 'Output' data type associated with it, please insure the BlockEntity is of the correct type and is not null before running this function.");
+                    return;
+                }
+
+                    //System.out.println("test13:" + soulTuner);
+
+                if (player != null) {
+                    if (!player.isCrouching()) {
+                        //System.out.println("test1:" + inputTag1);
+                        logicTag1.put("InputPos", RelativeCompoundTagPos.createTag(pos, pos));
+
+                        blockEntity.getPersistentData().put("Input1", logicTag1);
+                    } else {
+                        logicTag2.put("InputPos", RelativeCompoundTagPos.createTag(pos, pos));
+
+                        //System.out.println("test2:" + inputTag2);
+                        blockEntity.getPersistentData().put("Input2", logicTag2);
+                    }
+                } else {
+                    System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:SoulTunerAction.useWithIronNuget] Error: The provided player is null, please insure the provided player entity is not null before running this function.");
+                    //return;
+                }
+
+                    //System.out.println("test14:" + soulTuner);
+            } else {
+                System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:SoulTunerAction.useWithIronNuget] Error: The provided ItemStack 'awakenedShard' is not a 'gravedungeons:infested_iron_nuget' item, please insure the provided infestedNuget item is of the correct type and not null before running this function.");
+            }
+
+       // }
+    }
+
+    public static void useWithCopperNuget(ItemStack infestedNuget, BlockEntity blockEntity, Player player, BlockPos pos) {
+        //BlockPos inputItemPos = infestedNuget.get(ModDataComponentTypes.INPUT_POS);
+        //System.out.println("test12:" + inputItemPos);
+        //if ((inputItemPos.getX() != pos.getX()) || (inputItemPos.getY() != pos.getY()) || (inputItemPos.getZ() != pos.getZ())) {
+            //System.out.println("test19:" + pos);
+            //if (infestedNuget.get(ModDataComponentTypes.INPUT_POS) == null) {
+                //infestedNuget.set(ModDataComponentTypes.INPUT_POS, pos);
+                //System.out.println("test11:" + soulTuner);
+            //} else {
+                //BlockPos inputItemPos = infestedNuget.get(ModDataComponentTypes.INPUT_POS);
+
+            if (infestedNuget.getItem() == ModItems.INFESTED_COPPER_NUGET.get()) {
+                CompoundTag logicTag1 = blockEntity.getPersistentData().getCompoundOrEmpty("Logic1");
+                CompoundTag logicTag2 = blockEntity.getPersistentData().getCompoundOrEmpty("Logic2");
+
+                CompoundTag output = blockEntity.getPersistentData().getCompoundOrEmpty("Output");
+
+                if (output.isEmpty()) {
+                    System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:SoulTunerAction.useWithCopperNuget] Error: The BlockEntity: '" + blockEntity + "' at: '" + pos + "' does not have an 'Output' data type associated with it, please insure the BlockEntity is of the correct type and is not null before running this function.");
+                    return;
+                }
+
+                    //System.out.println("test13:" + soulTuner);
+
+                if (player != null) {
+                    if (!player.isCrouching()) {
+                        //System.out.println("test1:" + inputTag1);
+                        logicTag1.put("InputPos", RelativeCompoundTagPos.createTag(pos, pos));
+
+                        blockEntity.getPersistentData().put("Logic1", logicTag1);
+                    } else {
+                        logicTag2.put("InputPos", RelativeCompoundTagPos.createTag(pos, pos));
+
+                        //System.out.println("test2:" + inputTag2);
+                        blockEntity.getPersistentData().put("Logic2", logicTag2);
+                    }
+                } else {
+                    System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:SoulTunerAction.useWithCopperNuget] Error: The provided player is null, please insure the provided player entity is not null before running this function.");
+                    //return;
+                }
+
+                    //System.out.println("test14:" + soulTuner);
+            } else {
+                System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:SoulTunerAction.useWithCopperNuget] Error: The provided ItemStack 'awakenedShard' is not a 'gravedungeons:infested_copper_nuget' item, please insure the provided infestedNuget item is of the correct type and not null before running this function.");
+            }
+
+        //}
+    }
+
+    public static void useWithLootGem(Level level ,ItemStack gem, BlockEntity blockEntity, Player player, BlockPos pos) {
+        //BlockPos inputItemPos = infestedNuget.get(ModDataComponentTypes.INPUT_POS);
+        //System.out.println("test12:" + inputItemPos);
+        //if ((inputItemPos.getX() != pos.getX()) || (inputItemPos.getY() != pos.getY()) || (inputItemPos.getZ() != pos.getZ())) {
+            //System.out.println("test19:" + pos);
+            //if (infestedNuget.get(ModDataComponentTypes.INPUT_POS) == null) {
+                //infestedNuget.set(ModDataComponentTypes.INPUT_POS, pos);
+                //System.out.println("test11:" + soulTuner);
+            //} else {
+                //BlockPos inputItemPos = infestedNuget.get(ModDataComponentTypes.INPUT_POS);
+
+            if (gem.getItem() == ModItems.AWAKENED_LOOT_GEM.get()) {
+                //CompoundTag logicTag1 = blockEntity.getPersistentData().getCompoundOrEmpty("Logic1");
+                //CompoundTag logicTag2 = blockEntity.getPersistentData().getCompoundOrEmpty("Logic2");
+
+                CompoundTag output = blockEntity.getPersistentData().getCompoundOrEmpty("Output");
+
+                //String output = blockEntity.getPersistentData().getStringOr("LootTable", "");
+
+                Component customNameComponent = gem.get(DataComponents.CUSTOM_NAME);
+                String customName = customNameComponent.getString();
+
+                String lootTable = customName.substring((customName.indexOf("\"", 0) + 1), customName.indexOf("\"", customName.indexOf("\"", 1)));
+
+                System.out.println("test1:" + customName.indexOf("\"", 0));
+
+                String expChanceString = customName.substring((customName.indexOf("[", 0) + 1), customName.indexOf("]", customName.indexOf("[", 0)));
+                float expChance = (float) parseDouble(expChanceString);
+
+
+                if (output.isEmpty()) {
+                    System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:SoulTunerAction.useWithLootGem] Error: The BlockEntity: '" + blockEntity + "' at: '" + pos + "' does not have an 'Output' data type associated with it, please insure the BlockEntity is of the correct type and is not null before running this function.");
+                    return;
+                }
+
+                if (level.getBlockState(blockEntity.getBlockPos()).getBlock() != ModBlocks.RESONATOR_BLOCK.get()) {
+                    System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:SoulTunerAction.useWithLootGem] Error: The Block: '" + level.getBlockState(blockEntity.getBlockPos()) + "' at: '" + pos + "' is not a 'gravedungeons:resonator_block' and does not posses the correct data type associated with it, please insure the Block is of the correct type and is not null before running this function.");
+                    return;
+                }
+
+                    //System.out.println("test13:" + soulTuner);
+
+                if (player != null) {
+                    if (!player.isCrouching()) {
+                        //System.out.println("test1:" + inputTag1);
+                        //logicTag1.put("InputPos", RelativeCompoundTagPos.createTag(pos, pos));
+
+                        blockEntity.getPersistentData().putString("LootTable", lootTable);
+                    } else {
+                        //logicTag2.put("InputPos", RelativeCompoundTagPos.createTag(pos, pos));
+
+                        //System.out.println("test2:" + inputTag2);
+                        //blockEntity.getPersistentData().putString("LootTable", lootTable);
+                        blockEntity.getPersistentData().putFloat("EXPSpawnChance", expChance);
+                    }
+                } else {
+                    System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:SoulTunerAction.useWithLootGem] Error: The provided player is null, please insure the provided player entity is not null before running this function.");
+                    //return;
+                }
+
+                    //System.out.println("test14:" + soulTuner);
+            } else {
+                System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:SoulTunerAction.useWithLootGem] Error: The provided ItemStack 'gem' is not a 'gravedungeons:awakened_loot_gem' item, please insure the provided infestedNuget item is of the correct type and not null before running this function.");
+            }
+
+        //}
+    }
+
     public static void highlightInputPosBlock(LevelAccessor world, ItemStack soulTuner, Entity entity) {
         if (soulTuner.getItem() != ModItems.SOUL_TUNER.get()) {
             return;
@@ -283,7 +465,7 @@ public class SoulTunerAction {
                         Transformation customTransform = new Transformation(translation, leftRotation, scale, rightRotation);
 
                         if (player instanceof ServerPlayer _player) {
-                            GeneralEntityAction.spawnPrivateBlockDisplay(_level, _player, inputPos, state, customTransform, true);
+                            GeneralEntityAction.spawnPrivateBlockDisplay(_level, _player, inputPos, state, customTransform, ChatFormatting.DARK_AQUA, 0);
 
                         }
 
@@ -294,4 +476,33 @@ public class SoulTunerAction {
             }
         }
     }
+
+    public static ItemStack getContentsOrEmpty(ItemStack soulTuner) {
+        //ItemStack output = new ItemStack.EMPTY.get();
+
+        BundleContents currentContents = soulTuner.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);
+
+        if (currentContents.items().isEmpty()) {
+            System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:SoulTunerAction.useAction] Error: The BundleContents of item: '" + soulTuner + "' is empty or null, please insure the BundleContents of the item is not empty or null before running this function.");
+            return ItemStack.EMPTY;
+        }
+
+        //System.out.println("test9:" + currentContents.items());
+
+        List<ItemStack> contentsList = new ArrayList<>();
+        currentContents.items().forEach(template -> contentsList.add(template.create()));
+
+        ItemStack awakenedShard = contentsList.get(0);
+
+        return awakenedShard;
+    }
+
+    private static double parseDouble(String s) {
+        try {
+            return Double.parseDouble(s.trim());
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
 }

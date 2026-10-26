@@ -103,7 +103,17 @@ public class EchoCrystalData {
                 System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:EchoCrystalData.getPosOfInput] Error: The BlockEntity provided is null, please insure the BlockEntity is of the correct type and is not null before calling this function.");
             }
         } else {
-            System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:EchoCrystalData.getPosOfInput] Error: The provided 'id' value is outside the excepted range, please insure the value of 'id' is an int of either 1 or 2 before calling this function.");
+            if (id == 0) {
+                CompoundTag inputTag = blockEntity.getPersistentData().getCompoundOrEmpty("Input");
+
+                if (!inputTag.isEmpty()) {
+                    output = inputTag.getCompoundOrEmpty("InputPos");
+                } else {
+                    System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:EchoCrystalData.getPosOfInput] Error: The input of '" + id + "' dose not exist inside the targeted BlockEntity at '" + blockEntity.getBlockPos() + "' of type '" + blockEntity.getType() + "', please insure the provided 'blockEntity' is of a type that possesses the input tag of the provided 'id' before calling this function.");
+                }
+            } else {
+                System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:EchoCrystalData.getPosOfInput] Error: The provided 'id' value is outside the excepted range, please insure the value of 'id' is an int in between 0 - 2 before calling this function.");
+            }
         }
         return output;
     }

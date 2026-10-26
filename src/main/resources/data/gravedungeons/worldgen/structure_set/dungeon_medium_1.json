@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "gravedungeons:dungeon_medium_1",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 86,
+    "separation": 32,
+    "salt": 362142069
+  }
+}

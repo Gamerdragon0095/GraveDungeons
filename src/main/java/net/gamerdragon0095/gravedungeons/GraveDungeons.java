@@ -3,16 +3,27 @@ package net.gamerdragon0095.gravedungeons;
 import it.unimi.dsi.fastutil.ints.IntObjectImmutablePair;
 import it.unimi.dsi.fastutil.ints.IntObjectPair;
 import net.gamerdragon0095.gravedungeons.block.ModBlocks;
+import net.gamerdragon0095.gravedungeons.block.custom.decoratedPots.ModPatterns;
 import net.gamerdragon0095.gravedungeons.block.entity.ModBlockEntities;
 //import net.gamerdragon0095.gravedungeons.gui.ModMenus;
 import net.gamerdragon0095.gravedungeons.item.ModDataComponentTypes;
 import net.gamerdragon0095.gravedungeons.item.ModItems;
+//import net.gamerdragon0095.gravedungeons.world.features.StructureFeature;
+import net.minecraft.client.renderer.blockentity.DecoratedPotRenderer;
+import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.TickTask;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.entity.DecoratedPotPattern;
+import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.util.thread.SidedThreadGroups;
 import net.neoforged.neoforge.common.NeoForge;
@@ -20,6 +31,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -32,8 +44,11 @@ import javax.annotation.Nullable;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import java.util.Map;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(GraveDungeons.MODID)
@@ -54,8 +69,36 @@ public class GraveDungeons {
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModDataComponentTypes.DATA_COMPONENT_TYPES.register(modEventBus);
+        ModPatterns.register(modEventBus);
+        //StructureFeature.REGISTRY.register(modEventBus);
         //ModMenus.REGISTRY.register(modEventBus);
+        //modEventBus.addListener(this::commonSetup);
     }
+
+    /*private void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            try {
+                // 1. Find the private static map inside DecoratedPotPatterns that maps items to their patterns
+                // In 26.1.2, this map tracks which pattern resource key belongs to which sherd item ID string
+                Field itemToPatternField = DecoratedPotPatterns.class.getDeclaredField("ITEM_TO_POT_TEXTURE");
+                itemToPatternField.setAccessible(true);
+
+                // 2. Safely grab the live map instance
+                @SuppressWarnings("unchecked")
+                Map<Item, ResourceKey<DecoratedPotPattern>> map = (Map<Item, ResourceKey<DecoratedPotPattern>>) itemToPatternField.get(null);
+
+                // 3. Inject your custom item and its pattern key directly into the map
+                map.put(
+                        ModItems.IMMORTAL_POTTERY_SHERD.get(),
+                        ModPatterns.IMMORTAL_POTTERY_PATTERN.getKey()
+                );
+
+            } catch (Exception e) {
+                // Logs any mapping layout failures to your console during startup
+                LogManager.getLogger().error("Failed to inject custom pottery sherd mapping via reflection", e);
+            }
+        });
+    }*/
 
     private static boolean networkingRegistered = false;
     private static final Map<CustomPacketPayload.Type<?>, NetworkMessage<?>> MESSAGES = new HashMap<>();

@@ -2,6 +2,7 @@ package net.gamerdragon0095.gravedungeons.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.gamerdragon0095.dragon_lib.data.entity.GetCurrentHandWithItem;
+import net.gamerdragon0095.gravedungeons.action.block.GenericBlockAction;
 import net.gamerdragon0095.gravedungeons.action.block.entity.EchoCrystalAction;
 import net.gamerdragon0095.gravedungeons.action.block.entity.ResonatorBlockAction;
 import net.gamerdragon0095.gravedungeons.block.entity.ModBlockEntities;
@@ -19,17 +20,29 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class ResonatorBlock extends BaseEntityBlock {
+    public static final BooleanProperty IS_POWERED = BooleanProperty.create("is_powered");
 
     public ResonatorBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.defaultBlockState()
+                .setValue(IS_POWERED, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(IS_POWERED); // Replace with your actual BooleanProperty variable name
     }
 
     @Override
@@ -56,9 +69,9 @@ public class ResonatorBlock extends BaseEntityBlock {
         //ItemStack itemUsing = GetCurrentHandWithItem.mainHandPriority(player, ModItems.SOUL_TUNER.get());
 
         if (player.getMainHandItem().isEmpty()) {
-            //EchoCrystalAction.placeEchoCrystal(level, pos);
-            //ResonatorBlockAction.despinsOneItemFromTable(level, pos, "gravedungeons:genaric/grave_dungeon_small", 0.5f, Direction.UP);
-            //return InteractionResult.SUCCESS;
+            GenericBlockAction.displayInputsAboveHotbar(level ,level.getBlockEntity(pos), player, pos);
+
+            return InteractionResult.SUCCESS;
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }

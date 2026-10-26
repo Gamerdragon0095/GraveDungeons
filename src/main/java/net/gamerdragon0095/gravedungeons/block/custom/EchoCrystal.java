@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.gamerdragon0095.dragon_lib.data.entity.GetCurrentHandWithItem;
+import net.gamerdragon0095.gravedungeons.action.block.GenericBlockAction;
 import net.gamerdragon0095.gravedungeons.action.block.entity.EchoCrystalAction;
 import net.gamerdragon0095.gravedungeons.block.entity.ModBlockEntities;
 import net.gamerdragon0095.gravedungeons.block.entity.custom.EchoCrystalEntity;
@@ -49,7 +50,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.Map;
 
 public class EchoCrystal extends BaseEntityBlock {
-    public static final IntegerProperty LOGIC_STATE = IntegerProperty.create("logic_state", 1, 16);
+    public static final IntegerProperty LOGIC_STATE = IntegerProperty.create("logic_state", 0, 15);
 
     public static final MapCodec<EchoCrystal> CODEC = RecordCodecBuilder.mapCodec((i) -> i.group(Codec.FLOAT.fieldOf("height").forGetter((b) -> b.height), Codec.FLOAT.fieldOf("width").forGetter((b) -> b.width), propertiesCodec()).apply(i, EchoCrystal::new));
     public static final BooleanProperty WATERLOGGED;
@@ -59,11 +60,11 @@ public class EchoCrystal extends BaseEntityBlock {
     private final Map<Direction, VoxelShape> shapes;
 
     public EchoCrystal(Float height, Float width, Properties properties) {
-        super(properties);
+        super(properties.lightLevel(blockstate -> (int) EchoCrystalAction.echoCrystalLightLevel(blockstate)).noOcclusion());
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(WATERLOGGED, false)
                 .setValue(FACING, Direction.UP)
-                .setValue(LOGIC_STATE, 1));
+                .setValue(LOGIC_STATE, 0));
 
         this.shapes = Shapes.rotateAll(Block.boxZ((double)width, (double)(16.0F - height), (double)16.0F));
         this.height = height;
@@ -111,6 +112,12 @@ public class EchoCrystal extends BaseEntityBlock {
         }*/
             //return InteractionResult.SUCCESS;
         //}
+        if (player.getMainHandItem().isEmpty()) {
+            GenericBlockAction.displayInputsAboveHotbar(level ,level.getBlockEntity(pos), player, pos);
+
+            return InteractionResult.SUCCESS;
+        }
+
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 

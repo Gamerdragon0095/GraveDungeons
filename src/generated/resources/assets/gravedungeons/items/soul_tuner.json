@@ -1,0 +1,48 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:custom_model_data",
+    "index": 0,
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "gravedungeons:item/soul_tuner_empty"
+    },
+    "cases": [
+      {
+        "when": "echo",
+        "model": {
+          "type": "minecraft:model",
+          "model": "gravedungeons:item/soul_tuner_echo"
+        }
+      },
+      {
+        "when": "amethyst",
+        "model": {
+          "type": "minecraft:model",
+          "model": "gravedungeons:item/soul_tuner_amethyst"
+        }
+      },
+      {
+        "when": "iron",
+        "model": {
+          "type": "minecraft:model",
+          "model": "gravedungeons:item/soul_tuner_iron"
+        }
+      },
+      {
+        "when": "copper",
+        "model": {
+          "type": "minecraft:model",
+          "model": "gravedungeons:item/soul_tuner_copper"
+        }
+      },
+      {
+        "when": "loot",
+        "model": {
+          "type": "minecraft:model",
+          "model": "gravedungeons:item/soul_tuner_loot"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "sources": [
+    {
+      "type": "directory",
+      "source": "entity/decorated_pot",
+      "prefix": "gravedungeons:entity/decorated_pot/"
+    }
+  ]
+}

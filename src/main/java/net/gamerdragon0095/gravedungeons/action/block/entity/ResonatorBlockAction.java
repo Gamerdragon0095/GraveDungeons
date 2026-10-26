@@ -2,26 +2,19 @@ package net.gamerdragon0095.gravedungeons.action.block.entity;
 
 import com.mojang.math.Transformation;
 import net.gamerdragon0095.gravedungeons.action.block.GenericBlockAction;
-import net.gamerdragon0095.gravedungeons.action.entity.GeneralEntityAction;
+import net.gamerdragon0095.gravedungeons.action.lootTables.GenericLootTableAction;
+import net.gamerdragon0095.gravedungeons.block.custom.ResonatorBlock;
 import net.gamerdragon0095.gravedungeons.block.entity.ModBlockEntities;
-import net.gamerdragon0095.gravedungeons.data.block.entity.CompoundTagPos;
 import net.gamerdragon0095.gravedungeons.data.block.entity.RelativeCompoundTagPos;
-import net.gamerdragon0095.gravedungeons.item.ModDataComponentTypes;
 import net.gamerdragon0095.gravedungeons.item.ModItems;
 import net.gamerdragon0095.gravedungeons.tags.ModTags;
-import net.minecraft.commands.CommandSource;
-import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.permissions.PermissionSet;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -34,16 +27,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.Vec2;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.ICancellableEvent;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -63,6 +52,8 @@ public class ResonatorBlockAction {
                 CompoundTag output = new CompoundTag();
 
                 CompoundTag inputPos = new CompoundTag();
+
+                String lootTable = "gravedungeons:genaric/grave_dungeon_small";
 
 
                 //Set default inputPos values
@@ -91,6 +82,10 @@ public class ResonatorBlockAction {
 
                 blockEntity.getPersistentData().putBoolean("IsLocked", false);
 
+                blockEntity.getPersistentData().putString("LootTable", lootTable);
+
+                blockEntity.getPersistentData().putFloat("EXPSpawnChance", 50);
+
                 if (world instanceof Level _level) {
                     _level.sendBlockUpdated(pos, blockState, blockState, 3);
                 }
@@ -98,7 +93,7 @@ public class ResonatorBlockAction {
         }
     }
 
-    public static void despinsOneItemFromTable(LevelAccessor world, BlockPos pos, String loot, float velocity, Direction direction) {
+    public static void despinsOneItemFromTable(LevelAccessor world, BlockPos pos, String loot, float velocity, Direction direction, float expChance) {
         if (world instanceof ServerLevel serverLevel) {
 
             int x = pos.getX();
@@ -106,45 +101,52 @@ public class ResonatorBlockAction {
             int z = pos.getZ();
 
             // 2. Define the resource key for the target loot table
-            ResourceKey<LootTable> lootTableKey = ResourceKey.create(
-                    Registries.LOOT_TABLE,
-                    Identifier.parse(loot)
-            );
+            if (world instanceof Level level) {
+                ResourceKey<LootTable> lootTableKey = GenericLootTableAction.getLootTableKeyFromStringOr(
+                        loot,
+                        level,
+                        "gravedungeons:genaric/grave_dungeon_small"
+                );
+
+                LootTable lootTable = serverLevel.getServer().reloadableRegistries().getLootTable(lootTableKey);
+
+                // 4. Build the LootParams context (e.g., origin position and parameters)
+                LootParams lootParams = new LootParams.Builder(serverLevel)
+                        .withParameter(LootContextParams.ORIGIN, pos.getCenter())
+                        .create(LootContextParamSets.CHEST);
+
+                // 5. Generate and retrieve the list of ItemStack objects
+                List<ItemStack> items = lootTable.getRandomItems(lootParams);
+
+                for (ItemStack stack : items) {
+                    // Do something with the ItemStack
+                    if (world instanceof ServerLevel _level) {
+                        ItemEntity entityToSpawn = new ItemEntity(_level, (x + 0.5), (y + 1), (z + 0.5), stack);
+                        entityToSpawn.setPickUpDelay(10);
+                        entityToSpawn.setDeltaMovement(direction.getStepX() * velocity, direction.getStepY() * velocity, direction.getStepZ() * velocity);
+
+                        int expValue = Mth.nextInt(RandomSource.create(), 1, 10);
+                        ExperienceOrb expToSpawn = new ExperienceOrb(_level, (x + 0.5), (y + 1), (z + 0.5), expValue);
+                        expToSpawn.setDeltaMovement(direction.getStepX() * velocity, direction.getStepY() * velocity, direction.getStepZ() * velocity);
+
+                        float expChancePercentage = (expChance == 0) ? 0.0f : (expChance / 100);
+
+                        if (Math.random() < (expChancePercentage)) {
+                            _level.addFreshEntity(expToSpawn);
+                        } else {
+                            _level.addFreshEntity(entityToSpawn);
+                        }
+                    }
+                    break;
+                }
+            }
 
             // 3. Retrieve the LootTable from the server's reloadable registries
-            LootTable lootTable = serverLevel.getServer().reloadableRegistries().getLootTable(lootTableKey);
 
-            // 4. Build the LootParams context (e.g., origin position and parameters)
-            LootParams lootParams = new LootParams.Builder(serverLevel)
-                    .withParameter(LootContextParams.ORIGIN, pos.getCenter())
-                    .create(LootContextParamSets.CHEST);
-
-            // 5. Generate and retrieve the list of ItemStack objects
-            List<ItemStack> items = lootTable.getRandomItems(lootParams);
-
-            for (ItemStack stack : items) {
-                // Do something with the ItemStack
-                if (world instanceof ServerLevel _level) {
-                    ItemEntity entityToSpawn = new ItemEntity(_level, (x + 0.5), (y + 1), (z + 0.5), stack);
-                    entityToSpawn.setPickUpDelay(10);
-                    entityToSpawn.setDeltaMovement(direction.getStepX() * velocity, direction.getStepY() * velocity, direction.getStepZ() * velocity);
-
-                    int expValue = Mth.nextInt(RandomSource.create(), 1, 10);
-                    ExperienceOrb expToSpawn = new ExperienceOrb(_level, (x + 0.5), (y + 1), (z + 0.5), expValue);
-                    expToSpawn.setDeltaMovement(direction.getStepX() * velocity, direction.getStepY() * velocity, direction.getStepZ() * velocity);
-
-                    if (Math.random() < 0.6) {
-                        _level.addFreshEntity(expToSpawn);
-                    } else {
-                        _level.addFreshEntity(entityToSpawn);
-                    }
-                }
-                break;
-            }
         }
     }
 
-    public static void tickDespinsLootTimer(LevelAccessor world, BlockEntity blockEntity) {
+    public static void tickDespinsLootTimer(LevelAccessor world, BlockEntity blockEntity, BlockState blockState) {
         if (blockEntity == null) {
             return;
         }
@@ -156,38 +158,65 @@ public class ResonatorBlockAction {
             int countDownVal = output.getIntOr("DespinsLootTimer", 0);
             boolean isPowered = output.getBooleanOr("IsPowered", false);
 
-            if ((isPowered) && (countDownVal >= 1)) {
-                //System.out.println("test:1" + countDownVal);
+            if (isPowered && !blockState.getValue(ResonatorBlock.IS_POWERED)) {
+                BlockState currentState = world.getBlockState(blockEntity.getBlockPos());
+                BlockState newState = currentState.setValue(ResonatorBlock.IS_POWERED, true);
 
-                countDownVal = countDownVal - 1;
+                // 2. Pass flag 2 (Block.UPDATE_CLIENTS) to prevent full destruction loops
+                world.setBlock(blockEntity.getBlockPos(), newState, Block.UPDATE_CLIENTS);
 
-                //System.out.println("test:2" + countDownVal);
+                blockEntity.setChanged();
+            } else if (blockState.getValue(ResonatorBlock.IS_POWERED)) {
+                if ((countDownVal >= 1)) {
+                    countDownVal = countDownVal - 1;
 
-                output.putInt("DespinsLootTimer", countDownVal);
+                    //System.out.println("test:2" + countDownVal);
 
-                //System.out.println("test:3" + output);
+                    output.putInt("DespinsLootTimer", countDownVal);
+                    output.putBoolean("IsPowered", true);
 
-                blockEntity.getPersistentData().put("Output", output);
+                    //System.out.println("test:3" + output);
 
-                ResonatorBlockAction.despinsOneItemFromTable(world, blockEntity.getBlockPos(), "gravedungeons:genaric/grave_dungeon_small", 0.5f, Direction.UP);
-            } else if ((countDownVal == 0) && (!output.isEmpty()) && (isPowered)) {
-                world.levelEvent(2001, blockEntity.getBlockPos(), Block.getId(world.getBlockState(blockEntity.getBlockPos())));
-                if (world instanceof ServerLevel level) {
-                    level.setBlock(blockEntity.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+                    blockEntity.getPersistentData().put("Output", output);
+
+                    String lootTable = blockEntity.getPersistentData().getStringOr("LootTable", "");
+                    float expChance = blockEntity.getPersistentData().getFloatOr("EXPSpawnChance", 50);
+
+                    //Component customNameComponent = itemStack.get(DataComponents.CUSTOM_NAME);
+                    //String lootTable = customNameComponent.getString();
+
+                    //Float expChance = 0f;
+
+                    ResonatorBlockAction.despinsOneItemFromTable(world, blockEntity.getBlockPos(), lootTable, 0.5f, Direction.UP, expChance);
+                } else if ((countDownVal == 0)) {
+                    world.levelEvent(2001, blockEntity.getBlockPos(), Block.getId(world.getBlockState(blockEntity.getBlockPos())));
+                    if (world instanceof ServerLevel level) {
+                        level.setBlock(blockEntity.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+                    }
                 }
             }
         }
     }
 
-    public static void fetchInputTags(LevelAccessor world, BlockEntity blockEntity) {
+    public static void fetchInputTags(LevelAccessor world, BlockEntity blockEntity, BlockPos pos) {
         if (blockEntity != null) {
             if (blockEntity.getType() == ModBlockEntities.RESONATOR_BLOCK.get()) {
+
+                CompoundTag inputPos = new CompoundTag();
+
+                //Set default inputPos values
+                if (inputPos.isEmpty()) {
+                    inputPos.putFloat("X", 0);
+                    inputPos.putFloat("Y", 0);
+                    inputPos.putFloat("Z", 0);
+                }
 
                 //Get CompoundTags
                 CompoundTag inputTag1 = blockEntity.getPersistentData().getCompoundOrEmpty("Input");
 
                 //Get BlockPosses
                 BlockPos inputTagPos1 = RelativeCompoundTagPos.getOrReturnPos(inputTag1.getCompoundOrEmpty("InputPos"), blockEntity.getBlockPos(), blockEntity.getBlockPos());
+                BlockPos inputTagPosOffset1 = RelativeCompoundTagPos.getOffsetOrReturnPos(inputTag1.getCompoundOrEmpty("InputPos"), blockEntity.getBlockPos());
 
                 //Get BlockEntities
                 BlockEntity inputTagBlock1 = world.getBlockEntity(inputTagPos1);
@@ -208,7 +237,26 @@ public class ResonatorBlockAction {
                         input1 = inputTagBlock1.getPersistentData().getCompoundOrEmpty("Output").getBooleanOr("IsPowered", false);
                     }
                 } else {
+
+                    CompoundTag rotatedCompoundTagPos = RelativeCompoundTagPos.getRotedPosOffsetOrReturnEmpty(world, inputTag1.getCompoundOrEmpty("InputPos"), pos);
+
+                    if (!rotatedCompoundTagPos.isEmpty()) {
+                        inputTag1.put("InputPos", rotatedCompoundTagPos);
+                        inputTag1.putBoolean("IsPowered", false);
+                        blockEntity.getPersistentData().put("Input", inputTag1);
+                        if (world instanceof Level _level) {
+                            _level.sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
+                        }
+                        return;
+                    }
+
+                    inputTag1.put("InputPos", inputPos);
+                    blockEntity.getPersistentData().put("Input", inputTag1);
+                    if (world instanceof Level _level) {
+                        _level.sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
+                    }
                     System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:ResonatorBlockAction.fetchInputTags] Error: The BlockEntity at: '" + inputTagPos1 + "' is null, please insure the BlockEntity is of the correct type and is not null before running this function.");
+                    return;
                 }
 
                 //Update CompoundTag data
@@ -321,7 +369,7 @@ public class ResonatorBlockAction {
                     Transformation customTransform = new Transformation(translation, leftRotation, scale, rightRotation);
 
                     if (player instanceof ServerPlayer _player) {
-                        GeneralEntityAction.spawnPrivateBlockDisplay(_level, _player, pos_, state, customTransform, true);
+                        //GeneralEntityAction.spawnPrivateBlockDisplay(_level, _player, pos_, state, customTransform, true);
                     }
 
                     //System.out.println("CommandOutput:" + "execute as " + player.getStringUUID() + " positioned " + x + " " + y + " " + z + " run particle minecraft:crit ~ ~0.1 ~ 0.15 0.5 0.15 0.1 3 force @s");
@@ -332,5 +380,24 @@ public class ResonatorBlockAction {
                 //return;
             //}
         }
+    }
+
+    public static CompoundTag getPosOfInput(BlockEntity blockEntity) {
+        CompoundTag output = new CompoundTag();
+        if (blockEntity != null) {
+            if (blockEntity.getType() == ModBlockEntities.RESONATOR_BLOCK.get()) {
+                CompoundTag inputTag = blockEntity.getPersistentData().getCompoundOrEmpty("Input");
+
+                if (!inputTag.isEmpty()) {
+                    output = inputTag.getCompoundOrEmpty("InputPos");
+                }
+            } else {
+                System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:ResonatorBlockAction.getPosOfInput] Error: The BlockEntity at: '" + blockEntity.getBlockPos() + "' and of type: '" + blockEntity.getType() + " is not a 'gravedungeons:resonator_block' and therefore does not posses the right data for this function to work with it, please insure the BlockEntity is of the correct type before running this function.");
+            }
+        } else {
+            System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:ResonatorBlockAction.getPosOfInput] Error: The BlockEntity provided is null, please insure the BlockEntity is of the correct type and is not null before calling this function.");
+        }
+
+        return output;
     }
 }

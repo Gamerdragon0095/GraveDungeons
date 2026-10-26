@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "aaa",
+    "aaa",
+    "aaa"
+  ],
+  "key": {
+    "a": "gravedungeons:awakened_echo_fragment"
+  },
+  "result": {
+    "id": "gravedungeons:awakened_echo_shard",
+    "count": 1
+  }
+}

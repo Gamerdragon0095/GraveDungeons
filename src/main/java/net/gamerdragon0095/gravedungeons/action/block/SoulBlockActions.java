@@ -37,15 +37,15 @@ public class SoulBlockActions {
                 });
                 if (world instanceof Level _level) {
                     if (!_level.isClientSide()) {
-                        _level.playSound(null, BlockPos.containing(x, y, z), SoundEvents.GRINDSTONE_USE, SoundSource.PLAYERS, 0.3F, 0.005F);
+                        _level.playSound(null, BlockPos.containing(x, y, z), SoundEvents.SHROOMLIGHT_PLACE, SoundSource.PLAYERS, 1f, 1f);
                     } else {
-                        _level.playLocalSound(x, y, z, SoundEvents.GRINDSTONE_USE, SoundSource.PLAYERS, (float) 0.3, (float) 0.005, false);
+                        _level.playLocalSound(x, y, z, SoundEvents.SHROOMLIGHT_PLACE, SoundSource.PLAYERS,  1f,  1f, false);
                     }
                 }
                 for (int index0 = 0; index0 < 5; index0++) {
-                    if (world instanceof ServerLevel _level)
-                        _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, PermissionSet.ALL_PERMISSIONS, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(),
-                                "execute at @e[type=minecraft:falling_block,limit=5,sort=nearest,nbt={BlockState:{Name:\"gravedungeons:soul_block\"},NoGravity:1b}] run particle minecraft:crit ~ ~0.1 ~ 0.15 0 0.15 0.1 3 force @a");
+                    //if (world instanceof ServerLevel _level)
+                        //_level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, PermissionSet.ALL_PERMISSIONS, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(),
+                         //       "execute at @e[type=minecraft:falling_block,limit=5,sort=nearest,nbt={BlockState:{Name:\"gravedungeons:soul_block\"},NoGravity:1b}] run particle minecraft:crit ~ ~0.1 ~ 0.15 0 0.15 0.1 3 force @a");
                 }
                 GraveDungeons.queueServerWork(6, () -> {
                     if (world instanceof ServerLevel _level)
@@ -55,7 +55,7 @@ public class SoulBlockActions {
                                         "kill @e[type=minecraft:falling_block,limit=1,sort=nearest,nbt={BlockState:{Name:\"gravedungeons:soul_block\"},NoGravity:1b}]");
                     if (world instanceof ServerLevel _level)
                         _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, PermissionSet.ALL_PERMISSIONS, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(),
-                                "stopsound @a[distance=..10] player minecraft:block.grindstone.use");
+                                "stopsound @a[distance=..10] player minecraft:block.shroomlight.break");
                 });
                 GraveDungeons.queueServerWork(5, () -> {
                     world.setBlock(BlockPos.containing(x + (direction.getOpposite()).getStepX(), y + (direction.getOpposite()).getStepY(), z + (direction.getOpposite()).getStepZ()), ModBlocks.SOUL_BLOCK.get().defaultBlockState(), 3);
@@ -63,9 +63,9 @@ public class SoulBlockActions {
             } else {
                 if (world instanceof Level _level) {
                     if (!_level.isClientSide()) {
-                        _level.playSound(null, BlockPos.containing(x, y, z), SoundEvents.DEEPSLATE_PLACE, SoundSource.PLAYERS, (float) 0.3, (float) 0.005);
+                        _level.playSound(null, BlockPos.containing(x, y, z), SoundEvents.SHROOMLIGHT_BREAK, SoundSource.PLAYERS,  1f, 1f);
                     } else {
-                        _level.playLocalSound(x, y, z, SoundEvents.DEEPSLATE_PLACE, SoundSource.PLAYERS, (float) 0.3, (float) 0.005, false);
+                        _level.playLocalSound(x, y, z, SoundEvents.SHROOMLIGHT_BREAK, SoundSource.PLAYERS,  1f,  1f, false);
                     }
                 }
             }
@@ -80,15 +80,15 @@ public class SoulBlockActions {
                 });
                 if (world instanceof Level _level) {
                     if (!_level.isClientSide()) {
-                        _level.playSound(null, BlockPos.containing(x, y, z), SoundEvents.GRINDSTONE_USE, SoundSource.PLAYERS, 0.3F, 0.005F);
+                        _level.playSound(null, BlockPos.containing(x, y, z), SoundEvents.SHROOMLIGHT_PLACE, SoundSource.PLAYERS, 1f, 1f);
                     } else {
-                        _level.playLocalSound(x, y, z, SoundEvents.GRINDSTONE_USE, SoundSource.PLAYERS, (float) 0.3, (float) 0.005, false);
+                        _level.playLocalSound(x, y, z, SoundEvents.SHROOMLIGHT_PLACE, SoundSource.PLAYERS,  1f,  1f, false);
                     }
                 }
                 for (int index1 = 0; index1 < 5; index1++) {
-                    if (world instanceof ServerLevel _level)
-                        _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, PermissionSet.ALL_PERMISSIONS, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(),
-                                "execute at @e[type=minecraft:falling_block,limit=5,sort=nearest,nbt={BlockState:{Name:\"gravedungeons:soul_block\"},NoGravity:1b}] run particle minecraft:crit ~ ~0.1 ~ 0.15 0 0.15 0.1 3 force @a");
+                    //if (world instanceof ServerLevel _level)
+                        //_level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, PermissionSet.ALL_PERMISSIONS, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(),
+                        //        "execute at @e[type=minecraft:falling_block,limit=5,sort=nearest,nbt={BlockState:{Name:\"gravedungeons:soul_block\"},NoGravity:1b}] run particle minecraft:crit ~ ~0.1 ~ 0.15 0 0.15 0.1 3 force @a");
                 }
                 GraveDungeons.queueServerWork(6, () -> {
                     if (world instanceof ServerLevel _level)
@@ -98,7 +98,7 @@ public class SoulBlockActions {
                                 "kill @e[type=minecraft:falling_block,limit=1,sort=nearest,nbt={BlockState:{Name:\"gravedungeons:soul_block\"},NoGravity:1b}]");
                     if (world instanceof ServerLevel _level)
                         _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, PermissionSet.ALL_PERMISSIONS, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(),
-                                "stopsound @a[distance=..10] player minecraft:block.grindstone.use");
+                                "stopsound @a[distance=..10] player minecraft:block.shroomlight.break");
                 });
                 GraveDungeons.queueServerWork(5, () -> {
                     world.setBlock(BlockPos.containing(x + direction.getStepX(), y + direction.getStepY(), z + direction.getStepZ()), ModBlocks.SOUL_BLOCK.get().defaultBlockState(), 3);
@@ -106,9 +106,9 @@ public class SoulBlockActions {
             } else {
                 if (world instanceof Level _level) {
                     if (!_level.isClientSide()) {
-                        _level.playSound(null, BlockPos.containing(x, y, z), SoundEvents.DEEPSLATE_PLACE, SoundSource.PLAYERS, (float) 0.3, (float) 0.005);
+                        _level.playSound(null, BlockPos.containing(x, y, z), SoundEvents.SHROOMLIGHT_BREAK, SoundSource.PLAYERS,  1f,  1f);
                     } else {
-                        _level.playLocalSound(x, y, z, SoundEvents.DEEPSLATE_PLACE, SoundSource.PLAYERS, (float) 0.3, (float) 0.005, false);
+                        _level.playLocalSound(x, y, z, SoundEvents.SHROOMLIGHT_BREAK, SoundSource.PLAYERS,  1f,  1f, false);
                     }
                 }
             }

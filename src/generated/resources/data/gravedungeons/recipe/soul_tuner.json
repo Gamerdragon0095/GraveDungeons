@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  a",
+    " b ",
+    "c  "
+  ],
+  "key": {
+    "a": "gravedungeons:awakened_echo_fragment",
+    "b": "minecraft:stick",
+    "c": "gravedungeons:infested_copper_nuget"
+  },
+  "result": {
+    "id": "gravedungeons:soul_tuner",
+    "count": 1
+  }
+}

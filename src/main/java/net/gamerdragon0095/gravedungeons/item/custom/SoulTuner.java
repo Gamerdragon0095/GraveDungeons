@@ -1,12 +1,9 @@
 package net.gamerdragon0095.gravedungeons.item.custom;
 
 
-import com.mojang.serialization.MapCodec;
 import net.gamerdragon0095.gravedungeons.action.item.SoulTunerAction;
 import net.gamerdragon0095.gravedungeons.block.ModBlocks;
 import net.gamerdragon0095.gravedungeons.item.ModItems;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -15,7 +12,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickAction;
@@ -24,9 +24,11 @@ import net.minecraft.world.inventory.tooltip.BundleTooltip;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.BundleContents;
+import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 import org.apache.commons.lang3.math.Fraction;
 
 import net.minecraft.world.item.TooltipFlag;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class SoulTuner extends BundleItem {
     private static final int MAX_CUSTOM_CAPACITY = 64;
@@ -94,11 +97,85 @@ public class SoulTuner extends BundleItem {
             int amountInserted = tryInsertIntoCustomBundle(bundleStack, slot.getItem());
             if (amountInserted > 0) {
                 slot.getItem().shrink(amountInserted);
+
+                List<String> modelData = new ArrayList<>();
+
+                ItemStack contents = SoulTunerAction.getContentsOrEmpty(bundleStack);
+
+                if (!contents.isEmpty()) {
+                    if (contents.getItem() == ModItems.AWAKENED_ECHO_SHARD.get()) {
+                        modelData.add("echo");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.AWAKENED_AMETHYST_SHARD.get()) {
+                        modelData.add("amethyst");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.INFESTED_IRON_NUGET.get()) {
+                        modelData.add("iron");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.INFESTED_COPPER_NUGET.get()) {
+                        modelData.add("copper");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.AWAKENED_LOOT_GEM.get()) {
+                        modelData.add("loot");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    //bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(modelData, List.of(), List.of(), List.of()));
+                } else if (contents.isEmpty() && modelData.isEmpty()) {
+                    //bundleStack.remove(DataComponents.CUSTOM_MODEL_DATA);
+                }
+
+                bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
             }
         } else {
             if (slot.getItem().isEmpty()) {
                 // Take an item out if holding nothing and right-clicking the bundle
                 removeTopItem(bundleStack, slot, player);
+
+                List<String> modelData = new ArrayList<>();
+
+                ItemStack contents = SoulTunerAction.getContentsOrEmpty(bundleStack);
+
+                if (!contents.isEmpty()) {
+                    if (contents.getItem() == ModItems.AWAKENED_ECHO_SHARD.get()) {
+                        modelData.add("echo");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.AWAKENED_AMETHYST_SHARD.get()) {
+                        modelData.add("amethyst");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.INFESTED_IRON_NUGET.get()) {
+                        modelData.add("iron");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.INFESTED_COPPER_NUGET.get()) {
+                        modelData.add("copper");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.AWAKENED_LOOT_GEM.get()) {
+                        modelData.add("loot");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    //bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(modelData, List.of(), List.of(), List.of()));
+                } else if (contents.isEmpty() && modelData.isEmpty()) {
+                    //bundleStack.remove(DataComponents.CUSTOM_MODEL_DATA);
+                }
+
+                bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
             } else {
                 // Try to put the held item inside
                 return false;
@@ -124,12 +201,86 @@ public class SoulTuner extends BundleItem {
             if (!otherStack.isEmpty()) {
                 insertItem(bundleStack, otherStack, slot, player);
                 otherStack.shrink(amountInserted);
+
+                List<String> modelData = new ArrayList<>();
+
+                ItemStack contents = SoulTunerAction.getContentsOrEmpty(bundleStack);
+
+                if (!contents.isEmpty()) {
+                    if (contents.getItem() == ModItems.AWAKENED_ECHO_SHARD.get()) {
+                        modelData.add("echo");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.AWAKENED_AMETHYST_SHARD.get()) {
+                        modelData.add("amethyst");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.INFESTED_IRON_NUGET.get()) {
+                        modelData.add("iron");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.INFESTED_COPPER_NUGET.get()) {
+                        modelData.add("copper");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.AWAKENED_LOOT_GEM.get()) {
+                        modelData.add("loot");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    //bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(modelData, List.of(), List.of(), List.of()));
+                } else if (contents.isEmpty() && modelData.isEmpty()) {
+                    //bundleStack.remove(DataComponents.CUSTOM_MODEL_DATA);
+                }
+
+                bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
             } else {
                 return false;
             }
         } else {
             if (otherStack.isEmpty()) {
                 removeTopItemBySlotAccess(bundleStack, slotAccess, player);
+
+                List<String> modelData = new ArrayList<>();
+
+                ItemStack contents = SoulTunerAction.getContentsOrEmpty(bundleStack);
+
+                if (!contents.isEmpty()) {
+                    if (contents.getItem() == ModItems.AWAKENED_ECHO_SHARD.get()) {
+                        modelData.add("echo");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.AWAKENED_AMETHYST_SHARD.get()) {
+                        modelData.add("amethyst");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.INFESTED_IRON_NUGET.get()) {
+                        modelData.add("iron");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.INFESTED_COPPER_NUGET.get()) {
+                        modelData.add("copper");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    if (contents.getItem() == ModItems.AWAKENED_LOOT_GEM.get()) {
+                        modelData.add("loot");
+                        bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
+                    }
+
+                    //bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(modelData, List.of(), List.of(), List.of()));
+                } else if (contents.isEmpty() && modelData.isEmpty()) {
+                    //bundleStack.remove(DataComponents.CUSTOM_MODEL_DATA);
+                }
+
+                bundleStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), modelData, List.of()));
             } else {
                 // Try to put the held item inside
                 return false;
@@ -179,7 +330,12 @@ public class SoulTuner extends BundleItem {
             return 0;
         }
 
-        if ((insertStack.getItem() != ModItems.AWAKENED_ECHO_SHARD.get()) && (insertStack.getItem() != ModItems.AWAKENED_AMETHYST_SHARD.get())) {
+        if ((insertStack.getItem() != ModItems.AWAKENED_ECHO_SHARD.get())
+                && (insertStack.getItem() != ModItems.AWAKENED_AMETHYST_SHARD.get())
+                && (insertStack.getItem() != ModItems.INFESTED_IRON_NUGET.get())
+                && (insertStack.getItem() != ModItems.INFESTED_COPPER_NUGET.get())
+                && (insertStack.getItem() != ModItems.AWAKENED_LOOT_GEM.get())
+        ) {
             return 0;
         }
 
@@ -343,22 +499,17 @@ public class SoulTuner extends BundleItem {
     public void inventoryTick(ItemStack itemstack, ServerLevel world, Entity entity, @Nullable EquipmentSlot equipmentSlot) {
         super.inventoryTick(itemstack, world, entity, equipmentSlot);
         if ((equipmentSlot == EquipmentSlot.MAINHAND) || (equipmentSlot == EquipmentSlot.OFFHAND)) {
-            SoulTunerAction.highlightInputPosBlock(world, itemstack, entity);
+            BundleContents currentContents = itemstack.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);
+            if (!currentContents.isEmpty()) {
+                SoulTunerAction.highlightInputPosBlock(world, itemstack, entity);
+            }
         }
     }
 
-    public record ModeProperty() implements RangeSelectItemModelProperty {
-        public static final MapCodec<ModeProperty> MAP_CODEC = MapCodec.unit(new ModeProperty());
-
-        @Override
-        public float get(ItemStack itemStackToRender, @Nullable ClientLevel clientWorld, @Nullable ItemOwner owner, int seed) {
-            return 0; //(float) BundleTypeItemPropertyValueProviderProcedure.execute(itemStackToRender);
-        }
-
-        @Override
-        public MapCodec<ModeProperty> type() {
-            return MAP_CODEC;
-        }
+    @Override
+    public ItemResource computeDefaultResource(Function<Item, ItemResource> resourceConstructor) {
+        return super.computeDefaultResource(resourceConstructor);
     }
+
 
 }

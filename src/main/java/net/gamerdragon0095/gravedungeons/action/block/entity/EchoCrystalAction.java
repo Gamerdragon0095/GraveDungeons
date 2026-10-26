@@ -181,7 +181,7 @@ public class EchoCrystalAction {
                 int Y = blockEntity.getBlockPos().getY();
                 int Z = blockEntity.getBlockPos().getZ();
 
-
+                BlockPos pos = blockEntity.getBlockPos();
 
                 int logic1X = logicTagPos1.getX();
                 int logic1Y = logicTagPos1.getY();
@@ -209,9 +209,20 @@ public class EchoCrystalAction {
                 } else {
                     //logicTagPos1 = BlockPos.containing(X, Y, Z);
 
-                    logicTag1.put("InputPos", inputPos);
+                    CompoundTag posCheckRotationL1 = RelativeCompoundTagPos.getRotedPosOffsetOrReturnEmpty(world, logicTag1.getCompoundOrEmpty("InputPos"), pos);
+
+                    if (!posCheckRotationL1.isEmpty()) {
+                        logicTag1.put("InputPos", posCheckRotationL1);
+                    } else {
+                        logicTag1.put("InputPos", inputPos);
+                    }
+
                     blockEntity.getPersistentData().put("Logic1", logicTag1);
+                    if (world instanceof Level _level) {
+                        _level.sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
+                    }
                     System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:EchoCrystalAction.fetchInputsAndLogicTags] Error: The BlockEntity at: '" + logicTagPos1 + "' is null, please insure the BlockEntity is of the correct type and is not null before running this function.");
+                    return;
                 }
 
                 if (logicTagBlock2 != null) {
@@ -221,9 +232,20 @@ public class EchoCrystalAction {
                 } else {
                     //logicTagPos2 = BlockPos.containing(X, Y, Z);
 
-                    logicTag2.put("InputPos", inputPos);
+                    CompoundTag posCheckRotationL2 = RelativeCompoundTagPos.getRotedPosOffsetOrReturnEmpty(world, logicTag2.getCompoundOrEmpty("InputPos"), pos);
+
+                    if (!posCheckRotationL2.isEmpty()) {
+                        logicTag2.put("InputPos", posCheckRotationL2);
+                    } else {
+                        logicTag2.put("InputPos", inputPos);
+                    }
+
                     blockEntity.getPersistentData().put("Logic2", logicTag2);
+                    if (world instanceof Level _level) {
+                        _level.sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
+                    }
                     System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:EchoCrystalAction.fetchInputsAndLogicTags] Error: The BlockEntity at: '" + logicTagPos2 + "' is null, please insure the BlockEntity is of the correct type and is not null before running this function.");
+                    return;
                 }
 
                 if (inputTagBlock1 != null) {
@@ -233,9 +255,20 @@ public class EchoCrystalAction {
                 } else {
                     //inputTagPos1 = BlockPos.containing(X, Y, Z);
 
-                    inputTag1.put("InputPos", inputPos);
+                    CompoundTag posCheckRotationI1 = RelativeCompoundTagPos.getRotedPosOffsetOrReturnEmpty(world, inputTag1.getCompoundOrEmpty("InputPos"), pos);
+
+                    if (!posCheckRotationI1.isEmpty()) {
+                        inputTag1.put("InputPos", posCheckRotationI1);
+                    } else {
+                        inputTag1.put("InputPos", inputPos);
+                    }
+
                     blockEntity.getPersistentData().put("Input1", inputTag1);
+                    if (world instanceof Level _level) {
+                        _level.sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
+                    }
                     System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:EchoCrystalAction.fetchInputsAndLogicTags] Error: The BlockEntity at: '" + inputTagPos1 + "' is null, please insure the BlockEntity is of the correct type and is not null before running this function.");
+                    return;
                 }
 
                 if (inputTagBlock2 != null) {
@@ -245,9 +278,20 @@ public class EchoCrystalAction {
                 } else {
                     //inputTagPos2 = BlockPos.containing(X, Y, Z);
 
-                    inputTag2.put("InputPos", inputPos);
+                    CompoundTag posCheckRotationI2 = RelativeCompoundTagPos.getRotedPosOffsetOrReturnEmpty(world, inputTag2.getCompoundOrEmpty("InputPos"), pos);
+
+                    if (!posCheckRotationI2.isEmpty()) {
+                        inputTag2.put("InputPos", posCheckRotationI2);
+                    } else {
+                        inputTag2.put("InputPos", inputPos);
+                    }
+
                     blockEntity.getPersistentData().put("Input2", inputTag2);
+                    if (world instanceof Level _level) {
+                        _level.sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
+                    }
                     System.out.println("[" + (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND)) + "] [GraveDungeons:EchoCrystalAction.fetchInputsAndLogicTags] Error: The BlockEntity at: '" + inputTagPos2 + "' is null, please insure the BlockEntity is of the correct type and is not null before running this function.");
+                    return;
                 }
 
 
@@ -325,7 +369,7 @@ public class EchoCrystalAction {
         Boolean input1 = EchoCrystalData.getIsPoweredOfInput(blockEntity, 1);
         Boolean input2 = EchoCrystalData.getIsPoweredOfInput(blockEntity, 2);
 
-        int logicStateValue = 1;
+        int logicStateValue = 0;
 
         if (input1) {
             logicStateValue = logicStateValue + 1;
@@ -399,8 +443,9 @@ public class EchoCrystalAction {
         int targetY4 = targetPos4.getY();
         int targetZ4 = targetPos4.getZ();
 
-
         if (world instanceof ServerLevel _level) {
+            //echoCrystalLightLevel(world.getBlockState(pos));
+
             if (Math.random() < 0.05) {
                 if (input1) {
                     _level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(CommandSource.NULL, new Vec3(x, y, z), Vec2.ZERO, _level, PermissionSet.ALL_PERMISSIONS, "", Component.literal(""), _level.getServer(), null).withSuppressedOutput(),
@@ -433,8 +478,57 @@ public class EchoCrystalAction {
                 }
             }
         }
+    }
+
+    public static double echoCrystalLightLevel(BlockState blockState) {
+        Boolean shouldOutput = false;
+        int output = 0;
+
+        int state = blockState.getValue(EchoCrystal.LOGIC_STATE);
+
+        String binaryStateAndState = String.format("%4s", Integer.toBinaryString(state)).replace(' ', '0');
+
+        String stateBinary = binaryStateAndState.substring((int) ((binaryStateAndState).length() / 2d), (binaryStateAndState).length());
+
+        String modBinary = binaryStateAndState.substring(0, (int) ((binaryStateAndState).length() / 2d));
+
+        String input1Binary = stateBinary.substring(1);
+        String input2Binary = stateBinary.substring(0, 1);
+
+        Boolean input1 = input1Binary.contains("1");
+        Boolean input2 = input2Binary.contains("1");
+
+        if (modBinary.equals("00")) {
+            shouldOutput = (input1 || input2);
+        } else if (modBinary.equals("01")) {
+            shouldOutput = (!input1 && !input2);
+        } else if (modBinary.equals("10")) {
+            shouldOutput = (input1 && input2);
+        } else if (modBinary.equals("11")) {
+            shouldOutput = (input1 ^ input2);
+        }
+
+        if (shouldOutput) {
+            output = 10;
+        }
+
+
+        System.out.println("test1: " + binaryStateAndState);
+        System.out.println("test2: " + stateBinary);
+        System.out.println("test3: " + modBinary);
+
+        System.out.println("test4 input1: " + input1Binary);
+        System.out.println("test5 input2: " + input2Binary);
+
+        System.out.println("test6: " + shouldOutput);
+
+        System.out.println("test7: " + input1);
+        System.out.println("test8: " + input2);
 
 
 
+
+
+        return output;
     }
 }

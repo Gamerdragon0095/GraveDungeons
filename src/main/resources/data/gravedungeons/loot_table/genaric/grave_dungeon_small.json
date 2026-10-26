@@ -7,17 +7,32 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "gravedungeons:awakened_echo_shard",
-          "weight": 1
+          "name": "gravedungeons:awakened_echo_fragment",
+          "weight": 3
         },
         {
           "type": "minecraft:item",
-          "name": "gravedungeons:awakened_echo_fragment",
+          "name": "gravedungeons:infested_copper_nuget",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gravedungeons:infested_iron_nuget",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:amethyst_shard",
           "weight": 35
         },
         {
           "type": "minecraft:item",
-          "name": "gravedungeons:awakened_amethyst_shard",
+          "name": "minecraft:iron_nugget",
+          "weight": 35
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:copper_nugget",
           "weight": 35
         }
       ]

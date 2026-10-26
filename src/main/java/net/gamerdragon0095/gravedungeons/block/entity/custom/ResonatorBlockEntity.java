@@ -59,8 +59,8 @@ public class ResonatorBlockEntity extends BlockEntity {
 
             //Player player = level.getNearestPlayer(pos.getX(), pos.getY(), pos.getZ(), 64.0, false);
 
-            ResonatorBlockAction.tickDespinsLootTimer(level, blockEntity);
-            ResonatorBlockAction.fetchInputTags(level, blockEntity);
+            ResonatorBlockAction.tickDespinsLootTimer(level, blockEntity, blockState);
+            ResonatorBlockAction.fetchInputTags(level, blockEntity, pos);
 
             ResonatorBlockAction.setOutput(level, pos);
         }

@@ -1,0 +1,21 @@
+{
+  "name": "gravedungeons:dungeon_small_1",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:list_pool_element",
+        "projection": "rigid",
+        "elements": [
+          {
+            "element_type": "minecraft:single_pool_element",
+            "location": "gravedungeons:dungeon_small_1",
+            "projection": "rigid",
+            "processors": "minecraft:empty"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,417 +1,417 @@
 {
   "variants": {
-    "facing=down,logic_state=1": {
+    "facing=down,logic_state=0": {
       "model": "gravedungeons:block/echo_crystal_0000",
       "x": 180
     },
-    "facing=down,logic_state=2": {
+    "facing=down,logic_state=1": {
       "model": "gravedungeons:block/echo_crystal_1000",
       "x": 180
     },
-    "facing=down,logic_state=3": {
+    "facing=down,logic_state=2": {
       "model": "gravedungeons:block/echo_crystal_0100",
       "x": 180
     },
-    "facing=down,logic_state=4": {
+    "facing=down,logic_state=3": {
       "model": "gravedungeons:block/echo_crystal_1100",
       "x": 180
     },
-    "facing=down,logic_state=5": {
+    "facing=down,logic_state=4": {
       "model": "gravedungeons:block/echo_crystal_0010",
       "x": 180
     },
-    "facing=down,logic_state=6": {
+    "facing=down,logic_state=5": {
       "model": "gravedungeons:block/echo_crystal_1010",
       "x": 180
     },
-    "facing=down,logic_state=7": {
+    "facing=down,logic_state=6": {
       "model": "gravedungeons:block/echo_crystal_0110",
       "x": 180
     },
-    "facing=down,logic_state=8": {
+    "facing=down,logic_state=7": {
       "model": "gravedungeons:block/echo_crystal_1110",
       "x": 180
     },
-    "facing=down,logic_state=9": {
+    "facing=down,logic_state=8": {
       "model": "gravedungeons:block/echo_crystal_0001",
       "x": 180
     },
-    "facing=down,logic_state=10": {
+    "facing=down,logic_state=9": {
       "model": "gravedungeons:block/echo_crystal_1001",
       "x": 180
     },
-    "facing=down,logic_state=11": {
+    "facing=down,logic_state=10": {
       "model": "gravedungeons:block/echo_crystal_0101",
       "x": 180
     },
-    "facing=down,logic_state=12": {
+    "facing=down,logic_state=11": {
       "model": "gravedungeons:block/echo_crystal_1101",
       "x": 180
     },
-    "facing=down,logic_state=13": {
+    "facing=down,logic_state=12": {
       "model": "gravedungeons:block/echo_crystal_0011",
       "x": 180
     },
-    "facing=down,logic_state=14": {
+    "facing=down,logic_state=13": {
       "model": "gravedungeons:block/echo_crystal_1011",
       "x": 180
     },
-    "facing=down,logic_state=15": {
+    "facing=down,logic_state=14": {
       "model": "gravedungeons:block/echo_crystal_0111",
       "x": 180
     },
-    "facing=down,logic_state=16": {
+    "facing=down,logic_state=15": {
       "model": "gravedungeons:block/echo_crystal_1111",
       "x": 180
     },
-    "facing=east,logic_state=1": {
+    "facing=east,logic_state=0": {
       "model": "gravedungeons:block/echo_crystal_0000",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,logic_state=1": {
+      "model": "gravedungeons:block/echo_crystal_1000",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=2": {
-      "model": "gravedungeons:block/echo_crystal_1000",
+      "model": "gravedungeons:block/echo_crystal_0100",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=3": {
-      "model": "gravedungeons:block/echo_crystal_0100",
+      "model": "gravedungeons:block/echo_crystal_1100",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=4": {
-      "model": "gravedungeons:block/echo_crystal_1100",
+      "model": "gravedungeons:block/echo_crystal_0010",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=5": {
-      "model": "gravedungeons:block/echo_crystal_0010",
+      "model": "gravedungeons:block/echo_crystal_1010",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=6": {
-      "model": "gravedungeons:block/echo_crystal_1010",
+      "model": "gravedungeons:block/echo_crystal_0110",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=7": {
-      "model": "gravedungeons:block/echo_crystal_0110",
+      "model": "gravedungeons:block/echo_crystal_1110",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=8": {
-      "model": "gravedungeons:block/echo_crystal_1110",
+      "model": "gravedungeons:block/echo_crystal_0001",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=9": {
-      "model": "gravedungeons:block/echo_crystal_0001",
+      "model": "gravedungeons:block/echo_crystal_1001",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=10": {
-      "model": "gravedungeons:block/echo_crystal_1001",
+      "model": "gravedungeons:block/echo_crystal_0101",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=11": {
-      "model": "gravedungeons:block/echo_crystal_0101",
+      "model": "gravedungeons:block/echo_crystal_1101",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=12": {
-      "model": "gravedungeons:block/echo_crystal_1101",
+      "model": "gravedungeons:block/echo_crystal_0011",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=13": {
-      "model": "gravedungeons:block/echo_crystal_0011",
+      "model": "gravedungeons:block/echo_crystal_1011",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=14": {
-      "model": "gravedungeons:block/echo_crystal_1011",
+      "model": "gravedungeons:block/echo_crystal_0111",
       "x": 90,
       "y": 90
     },
     "facing=east,logic_state=15": {
-      "model": "gravedungeons:block/echo_crystal_0111",
-      "x": 90,
-      "y": 90
-    },
-    "facing=east,logic_state=16": {
       "model": "gravedungeons:block/echo_crystal_1111",
       "x": 90,
       "y": 90
     },
-    "facing=north,logic_state=1": {
+    "facing=north,logic_state=0": {
       "model": "gravedungeons:block/echo_crystal_0000",
       "x": 90
     },
-    "facing=north,logic_state=2": {
+    "facing=north,logic_state=1": {
       "model": "gravedungeons:block/echo_crystal_1000",
       "x": 90
     },
-    "facing=north,logic_state=3": {
+    "facing=north,logic_state=2": {
       "model": "gravedungeons:block/echo_crystal_0100",
       "x": 90
     },
-    "facing=north,logic_state=4": {
+    "facing=north,logic_state=3": {
       "model": "gravedungeons:block/echo_crystal_1100",
       "x": 90
     },
-    "facing=north,logic_state=5": {
+    "facing=north,logic_state=4": {
       "model": "gravedungeons:block/echo_crystal_0010",
       "x": 90
     },
-    "facing=north,logic_state=6": {
+    "facing=north,logic_state=5": {
       "model": "gravedungeons:block/echo_crystal_1010",
       "x": 90
     },
-    "facing=north,logic_state=7": {
+    "facing=north,logic_state=6": {
       "model": "gravedungeons:block/echo_crystal_0110",
       "x": 90
     },
-    "facing=north,logic_state=8": {
+    "facing=north,logic_state=7": {
       "model": "gravedungeons:block/echo_crystal_1110",
       "x": 90
     },
-    "facing=north,logic_state=9": {
+    "facing=north,logic_state=8": {
       "model": "gravedungeons:block/echo_crystal_0001",
       "x": 90
     },
-    "facing=north,logic_state=10": {
+    "facing=north,logic_state=9": {
       "model": "gravedungeons:block/echo_crystal_1001",
       "x": 90
     },
-    "facing=north,logic_state=11": {
+    "facing=north,logic_state=10": {
       "model": "gravedungeons:block/echo_crystal_0101",
       "x": 90
     },
-    "facing=north,logic_state=12": {
+    "facing=north,logic_state=11": {
       "model": "gravedungeons:block/echo_crystal_1101",
       "x": 90
     },
-    "facing=north,logic_state=13": {
+    "facing=north,logic_state=12": {
       "model": "gravedungeons:block/echo_crystal_0011",
       "x": 90
     },
-    "facing=north,logic_state=14": {
+    "facing=north,logic_state=13": {
       "model": "gravedungeons:block/echo_crystal_1011",
       "x": 90
     },
-    "facing=north,logic_state=15": {
+    "facing=north,logic_state=14": {
       "model": "gravedungeons:block/echo_crystal_0111",
       "x": 90
     },
-    "facing=north,logic_state=16": {
+    "facing=north,logic_state=15": {
       "model": "gravedungeons:block/echo_crystal_1111",
       "x": 90
     },
-    "facing=south,logic_state=1": {
+    "facing=south,logic_state=0": {
       "model": "gravedungeons:block/echo_crystal_0000",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south,logic_state=1": {
+      "model": "gravedungeons:block/echo_crystal_1000",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=2": {
-      "model": "gravedungeons:block/echo_crystal_1000",
+      "model": "gravedungeons:block/echo_crystal_0100",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=3": {
-      "model": "gravedungeons:block/echo_crystal_0100",
+      "model": "gravedungeons:block/echo_crystal_1100",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=4": {
-      "model": "gravedungeons:block/echo_crystal_1100",
+      "model": "gravedungeons:block/echo_crystal_0010",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=5": {
-      "model": "gravedungeons:block/echo_crystal_0010",
+      "model": "gravedungeons:block/echo_crystal_1010",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=6": {
-      "model": "gravedungeons:block/echo_crystal_1010",
+      "model": "gravedungeons:block/echo_crystal_0110",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=7": {
-      "model": "gravedungeons:block/echo_crystal_0110",
+      "model": "gravedungeons:block/echo_crystal_1110",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=8": {
-      "model": "gravedungeons:block/echo_crystal_1110",
+      "model": "gravedungeons:block/echo_crystal_0001",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=9": {
-      "model": "gravedungeons:block/echo_crystal_0001",
+      "model": "gravedungeons:block/echo_crystal_1001",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=10": {
-      "model": "gravedungeons:block/echo_crystal_1001",
+      "model": "gravedungeons:block/echo_crystal_0101",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=11": {
-      "model": "gravedungeons:block/echo_crystal_0101",
+      "model": "gravedungeons:block/echo_crystal_1101",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=12": {
-      "model": "gravedungeons:block/echo_crystal_1101",
+      "model": "gravedungeons:block/echo_crystal_0011",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=13": {
-      "model": "gravedungeons:block/echo_crystal_0011",
+      "model": "gravedungeons:block/echo_crystal_1011",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=14": {
-      "model": "gravedungeons:block/echo_crystal_1011",
+      "model": "gravedungeons:block/echo_crystal_0111",
       "x": 90,
       "y": 180
     },
     "facing=south,logic_state=15": {
-      "model": "gravedungeons:block/echo_crystal_0111",
-      "x": 90,
-      "y": 180
-    },
-    "facing=south,logic_state=16": {
       "model": "gravedungeons:block/echo_crystal_1111",
       "x": 90,
       "y": 180
     },
-    "facing=up,logic_state=1": {
+    "facing=up,logic_state=0": {
       "model": "gravedungeons:block/echo_crystal_0000"
     },
-    "facing=up,logic_state=2": {
+    "facing=up,logic_state=1": {
       "model": "gravedungeons:block/echo_crystal_1000"
     },
-    "facing=up,logic_state=3": {
+    "facing=up,logic_state=2": {
       "model": "gravedungeons:block/echo_crystal_0100"
     },
-    "facing=up,logic_state=4": {
+    "facing=up,logic_state=3": {
       "model": "gravedungeons:block/echo_crystal_1100"
     },
-    "facing=up,logic_state=5": {
+    "facing=up,logic_state=4": {
       "model": "gravedungeons:block/echo_crystal_0010"
     },
-    "facing=up,logic_state=6": {
+    "facing=up,logic_state=5": {
       "model": "gravedungeons:block/echo_crystal_1010"
     },
-    "facing=up,logic_state=7": {
+    "facing=up,logic_state=6": {
       "model": "gravedungeons:block/echo_crystal_0110"
     },
-    "facing=up,logic_state=8": {
+    "facing=up,logic_state=7": {
       "model": "gravedungeons:block/echo_crystal_1110"
     },
-    "facing=up,logic_state=9": {
+    "facing=up,logic_state=8": {
       "model": "gravedungeons:block/echo_crystal_0001"
     },
-    "facing=up,logic_state=10": {
+    "facing=up,logic_state=9": {
       "model": "gravedungeons:block/echo_crystal_1001"
     },
-    "facing=up,logic_state=11": {
+    "facing=up,logic_state=10": {
       "model": "gravedungeons:block/echo_crystal_0101"
     },
-    "facing=up,logic_state=12": {
+    "facing=up,logic_state=11": {
       "model": "gravedungeons:block/echo_crystal_1101"
     },
-    "facing=up,logic_state=13": {
+    "facing=up,logic_state=12": {
       "model": "gravedungeons:block/echo_crystal_0011"
     },
-    "facing=up,logic_state=14": {
+    "facing=up,logic_state=13": {
       "model": "gravedungeons:block/echo_crystal_1011"
     },
-    "facing=up,logic_state=15": {
+    "facing=up,logic_state=14": {
       "model": "gravedungeons:block/echo_crystal_0111"
     },
-    "facing=up,logic_state=16": {
+    "facing=up,logic_state=15": {
       "model": "gravedungeons:block/echo_crystal_1111"
     },
-    "facing=west,logic_state=1": {
+    "facing=west,logic_state=0": {
       "model": "gravedungeons:block/echo_crystal_0000",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=2": {
+    "facing=west,logic_state=1": {
       "model": "gravedungeons:block/echo_crystal_1000",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=3": {
+    "facing=west,logic_state=2": {
       "model": "gravedungeons:block/echo_crystal_0100",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=4": {
+    "facing=west,logic_state=3": {
       "model": "gravedungeons:block/echo_crystal_1100",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=5": {
+    "facing=west,logic_state=4": {
       "model": "gravedungeons:block/echo_crystal_0010",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=6": {
+    "facing=west,logic_state=5": {
       "model": "gravedungeons:block/echo_crystal_1010",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=7": {
+    "facing=west,logic_state=6": {
       "model": "gravedungeons:block/echo_crystal_0110",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=8": {
+    "facing=west,logic_state=7": {
       "model": "gravedungeons:block/echo_crystal_1110",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=9": {
+    "facing=west,logic_state=8": {
       "model": "gravedungeons:block/echo_crystal_0001",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=10": {
+    "facing=west,logic_state=9": {
       "model": "gravedungeons:block/echo_crystal_1001",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=11": {
+    "facing=west,logic_state=10": {
       "model": "gravedungeons:block/echo_crystal_0101",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=12": {
+    "facing=west,logic_state=11": {
       "model": "gravedungeons:block/echo_crystal_1101",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=13": {
+    "facing=west,logic_state=12": {
       "model": "gravedungeons:block/echo_crystal_0011",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=14": {
+    "facing=west,logic_state=13": {
       "model": "gravedungeons:block/echo_crystal_1011",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=15": {
+    "facing=west,logic_state=14": {
       "model": "gravedungeons:block/echo_crystal_0111",
       "x": 90,
       "y": 270
     },
-    "facing=west,logic_state=16": {
+    "facing=west,logic_state=15": {
       "model": "gravedungeons:block/echo_crystal_1111",
       "x": 90,
       "y": 270

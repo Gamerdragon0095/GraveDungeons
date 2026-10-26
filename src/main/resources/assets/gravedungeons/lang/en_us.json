@@ -1,9 +1,15 @@
 {
   "item.gravedungeons.soul_tuner": "Soul Tuner",
   "item.gravedungeons.awakened_amethyst_shard": "Awakened Amethyst Shard",
-  "item.gravedungeons.awakened_echo_shard": "Awakened Echo Shard",
+  "item.gravedungeons.awakened_echo_fragment": "Awakened Echo fragment",
+  "item.gravedungeons.infested_iron_nuget": "Infested Iron Nuget",
+  "item.gravedungeons.infested_copper_nuget": "Infested Copper Nuget",
 
   "block.gravedungeons.echo_crystal": "Echo Crystal",
   "block.gravedungeons.soul_block_sensor": "Soul Block Sensor",
-  "block.gravedungeons.soul_block": "Soul Block"
+  "block.gravedungeons.soul_block": "Soul Block",
+  "block.gravedungeons.infested_earth": "Infested Earth",
+  "block.gravedungeons.infested_stone": "Infested Stone",
+  "block.gravedungeons.infested_bone": "Infested Bone Block",
+  "block.gravedungeons.resonator_block": "Resonator"
 }

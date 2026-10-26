@@ -1,6 +1,7 @@
 package net.gamerdragon0095.gravedungeons.block;
 
 import net.gamerdragon0095.gravedungeons.GraveDungeons;
+import net.gamerdragon0095.gravedungeons.action.block.entity.EchoCrystalAction;
 import net.gamerdragon0095.gravedungeons.block.custom.EchoCrystal;
 import net.gamerdragon0095.gravedungeons.block.custom.ResonatorBlock;
 import net.gamerdragon0095.gravedungeons.block.custom.SoulBlock;
@@ -24,6 +25,7 @@ public class ModBlocks {
             properties -> new EchoCrystal(6f, 12f, properties
                     .strength(2f)
                     .sound(SoundType.AMETHYST_CLUSTER)
+                    .lightLevel(state -> (int) EchoCrystalAction.echoCrystalLightLevel(state))
             ));
 
     public static final DeferredBlock<Block> SOUL_BLOCK_SENSOR = registerBlock("soul_block_sensor",
